@@ -67,9 +67,7 @@ public class ClosetActivity extends AppCompatActivity{
                     case R.id.nav_sub_menu_item04:
                         Toast.makeText(ClosetActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
-
                 }
-
                 return true;
             }
         });
@@ -90,14 +88,7 @@ public class ClosetActivity extends AppCompatActivity{
         //어답터 세팅
         mAdapter = new ListViewAdapter(itemArrayList); //스트링 배열 데이터 인자로
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-
     }
-
-
-
 
     public class item {
         String name;
