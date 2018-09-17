@@ -23,6 +23,13 @@
         <activity android:name=".Bottom_longActivity" />
         <activity android:name=".Bottom_shortActivity" />
         <activity android:name=".OuterActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".EmailpwfindActivity"
+            android:label="@string/title_activity_emailpwfind"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".EmailaccessActivity"></activity>
     </application>
 
 </manifest>
