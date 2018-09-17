@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!-- 내일 뭐입지 글자 넣을 예정-->
+    <LinearLayout
+        android:id="@+id/Weather_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="8">
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/my_font"
+            android:text="오늘 뭐 입지?"
+            android:textSize="80sp"
+            android:gravity="center"
+
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/idText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30px"
+            android:ems="15"
+            android:background="@drawable/back"
+            android:hint="아이디"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:layout_marginTop="30px"
+            android:layout_gravity="center"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:background="@drawable/back"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/findID_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디 ＆ 비밀번호 찾기" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
+            android:text="|"/>
+        <TextView
+            android:id="@+id/join_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="로그인"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
