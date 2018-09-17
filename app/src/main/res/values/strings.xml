@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">cody_</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="nav_item_attachment">내 정보</string>
+    <string name="nav_item_main">Main</string>
+    <string name="nav_sub_menu_item01">간편 코디</string>
+    <string name="nav_sub_menu_item02">내 옷 어때?</string>
+    <string name="nav_sub_menu_item03">전문가님 도와주세요</string>
+    <string name="nav_sub_menu_item04">내 옷장</string>
+    <string name="drawer_header_text">Menu</string>
+    <string name="second_activity_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consectetur diam id aliquam scelerisque. Donec ultrices lacus vel dignissim pharetra. Vivamus pharetra augue quis rhoncus placerat. Sed ultricies at risus non cursus. Nam rutrum leo nec placerat consectetur. Vestibulum feugiat eleifend diam, nec interdum augue tincidunt sit amet. Praesent feugiat est auctor lacus consectetur, vitae pellentesque dolor laoreet.</string>
+    <string name="title_activity_second">SecondActivity</string>
+</resources>
