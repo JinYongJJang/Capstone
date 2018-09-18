@@ -5,7 +5,8 @@
     android:id="@+id/parent_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:id="@+id/Login_layout"
@@ -13,7 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="right"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="#FFFFFF">
 
         <TextView
             android:id="@+id/Main_Login_button"
@@ -34,13 +36,22 @@
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/my_font"
             android:text="오늘 뭐 입지?"
             android:textSize="80sp"
             android:gravity="center"
-
+            android:background="#FFFFFF"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="날씨"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="일정"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -49,38 +60,122 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/Fast_Cody"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="20px"
-            android:text="간편 코디" />
+            android:orientation="horizontal"
+            android:layout_weight="4">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2">
+                <ImageButton
+                    android:id="@+id/Fast_Cody"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/clothes"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="20px"
+                    android:background="#FFFFFF"
+                    android:text="간편 코디" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="간편 코디"
+                    android:gravity="center"
+                    android:background="#FFFFFF"
+                    android:paddingBottom="15px"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2">
+                <ImageButton
+                    android:id="@+id/Closet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/wardrobe"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="20px"
+                    android:background="#FFFFFF"
+                    android:text="내 옷장" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내 옷장"
+                    android:gravity="center"
+                    android:background="#FFFFFF"
+                    android:paddingBottom="15px"
+                    />
 
-        <Button
-            android:id="@+id/How_Cloth"
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="20px"
-            android:text="내 옷 어때?" />
+            android:orientation="horizontal"
+            android:layout_weight="4">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/How_Cloth"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/chat"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="20px"
+                    android:background="#FFFFFF"
+                    android:text="내 옷 어때?" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내 옷 어때?"
+                    android:gravity="center"
+                    android:background="#FFFFFF"
+                    android:paddingBottom="25px"
+                    />
 
-        <Button
-            android:id="@+id/Expert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="20px"
-            android:text="전문가님 도와주세요" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/Expert"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/consulting"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="20px"
+                    android:background="#FFFFFF"
+                    android:text="전문가님 도와주세요" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="전문가님 도와주세요"
+                    android:gravity="center"
+                    android:background="#FFFFFF"
+                    android:paddingBottom="25px"
+                    />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/Closet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="20px"
-            android:text="내 옷장" />
+
+
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
