@@ -6,31 +6,33 @@
 
     <TextView
         android:id="@+id/Join_Text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="JOIN"
-        android:textSize="30dp"
-        android:textColor="@color/UserBlack"/>
+        android:textSize="33dp"
+        android:padding="10dp"
+        android:textColor="#A566FF"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
         android:padding="15px">
         <TextView
             android:id="@+id/InputData_Text"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="정보 입력"
-            android:textColor="@color/UserBlack"/>
+            android:textColor="#A566FF"/>
 
         <TextView
-            android:textSize="15dp"
+            android:textSize="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" - 가입 완료"
-            android:textColor="#909090"/>
+            android:text="  -  가입 완료"
+            android:textColor="#D1B2FF"/>
 
     </LinearLayout>
 
@@ -38,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="4"
         android:layout_gravity="center"
         android:gravity="center">
         <EditText
@@ -47,11 +50,12 @@
             android:minEms="15"
             android:maxEms="30"
             android:hint="이름"
-            android:textColorHint="@color/UserBlack"
+            android:padding="10dp"
+            android:textColorHint="@color/status_color"
             android:background="@drawable/back"
             android:inputType="textPersonName"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginTop="-40dp"
+            android:layout_marginBottom="20dp"/>
 
         <EditText
             android:id="@+id/EmailText"
@@ -60,10 +64,11 @@
             android:minEms="15"
             android:maxEms="30"
             android:hint="이메일"
-            android:textColorHint="@color/UserBlack"
+            android:padding="10dp"
+            android:textColorHint="@color/status_color"
             android:background="@drawable/back"
             android:inputType="textEmailAddress"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="20dp"/>
 
         <EditText
             android:id="@+id/passwordText"
@@ -71,21 +76,32 @@
             android:layout_height="wrap_content"
             android:minEms="15"
             android:maxEms="30"
+            android:padding="10dp"
             android:hint="비밀번호 (6자 이상)"
-            android:textColorHint="@color/UserBlack"
+            android:textColorHint="@color/status_color"
             android:background="@drawable/back"
             android:inputType="textPassword"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 
-
-    <Button
-        android:id="@+id/register_button"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="8"
-        android:text="회원가입"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="8"
+            android:padding="20dp"
+            android:text="회원가입"
+            android:background="@drawable/button_back"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

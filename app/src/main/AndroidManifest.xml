@@ -34,7 +34,9 @@
         <activity android:name=".EmailaccessActivity" />
         <activity android:name=".Fast_codyActivity" />
         <activity android:name=".How_clothActivity" />
-        <activity android:name=".ExpertActivity"></activity>
+        <activity android:name=".ExpertActivity" />
+        <activity android:name=".Boardintro" />
+        <activity android:name=".SubActivity" />
     </application>
 
 </manifest>

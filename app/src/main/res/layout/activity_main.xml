@@ -22,9 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="로그인"
+            android:textSize="18dp"
             android:paddingTop="20dp"
             android:paddingRight="25dp"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textColor="#A566FF"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,27 +34,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="3">
+        android:layout_weight="1">
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/my_font"
             android:text="오늘 뭐 입지?"
-            android:textSize="80sp"
+            android:textSize="90sp"
             android:gravity="center"
-            android:background="#FFFFFF"
-            />
+            android:background="#FFFFFF"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="5">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:textColor="#A566FF"
             android:text="날씨"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="일정"/>
-
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:textColor="#A566FF"
+            android:text="일정" />
     </LinearLayout>
+
+
+
 
     <LinearLayout
         android:id="@+id/Button_layout"

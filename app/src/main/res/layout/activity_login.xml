@@ -34,21 +34,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30px"
+            android:padding="10dp"
             android:ems="15"
             android:background="@drawable/back"
             android:hint="아이디"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:inputType="textPersonName" />
+            android:textColorHint="@color/status_color"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/passwordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="15"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
             android:layout_gravity="center"
-            android:textColorHint="@color/colorPrimaryDark"
+            android:textColorHint="@color/status_color"
             android:background="@drawable/back"
             android:hint="비밀번호"
             android:inputType="textPassword" />
@@ -67,18 +68,21 @@
             android:id="@+id/findID_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="아이디 ＆ 비밀번호 찾기" />
+            android:text="아이디 ＆ 비밀번호 찾기"
+            android:textColor="@color/status_color"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10px"
             android:layout_marginRight="10px"
-            android:text="|"/>
+            android:text="|"
+            android:textColor="@color/status_color"/>
         <TextView
             android:id="@+id/join_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회원가입"/>
+            android:text="회원가입"
+            android:textColor="@color/status_color"/>
 
     </LinearLayout>
 
@@ -93,8 +97,8 @@
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="로그인"/>
+            android:text="로그인"
+            android:background="@drawable/button_back"/>
 
 
     </LinearLayout>

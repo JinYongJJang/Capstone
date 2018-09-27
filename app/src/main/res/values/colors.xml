@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name = "UserBlack"> #000000</color>
     <color name = "status_color"> #C98AFF</color>
+    <color name="cursorColor">#A566FF</color>
 </resources>
