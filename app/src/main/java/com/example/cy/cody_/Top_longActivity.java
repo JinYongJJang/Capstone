@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Top_longActivity extends AppCompatActivity{
+public class  Top_longActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout; // 서랍 레이아웃
     private RecyclerView mRecyclerView;
     private ListViewAdapter mAdapter;
