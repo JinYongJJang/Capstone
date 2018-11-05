@@ -28,7 +28,7 @@
             android:textSize="25dp" />
 
         <Button
-            android:id="@+id/editbutton"
+            android:id="@+id/usersaveboa"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginLeft="180dp"
@@ -51,7 +51,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="25dp"
             android:text="제목:"
-            android:textColor="#A566FF"
+            android:textColor="#C98AFF"
             android:textSize="20dp" />
 
         <EditText
@@ -79,6 +79,8 @@
             android:layout_gravity="center"
             android:background="#A566FF"
             android:text="사진 선택"
+            android:id="@+id/usergetpic"
+            android:onClick="onClick"
             android:textColor="#ffffff"
             android:textSize="18dp" />
 
@@ -96,5 +98,4 @@
             android:theme="@style/EditTheme"
             android:hint="내용을 작성하세요."/>
     </LinearLayout>
-
 </LinearLayout>

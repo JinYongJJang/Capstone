@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
 
         final TextView joinButton = (TextView) findViewById(R.id.join_button);
-        final TextView findIDButton = (TextView) findViewById(R.id.findID_button);
+        //final TextView findIDButton = (TextView) findViewById(R.id.findID_button);
         final Button loginButton = (Button) findViewById(R.id.login_button);
 
         joinButton.setOnClickListener(new View.OnClickListener(){  // 회원가입 버튼 클릭
@@ -39,13 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        findIDButton.setOnClickListener(new View.OnClickListener() {  // 아이디 찾기 버튼 클릭
-            @Override
-            public void onClick(View view) {
-                Intent registerIntent = new Intent(getApplicationContext(), EmailpwfindActivity.class);
-                startActivity(registerIntent);
-            }
-        });
+//        findIDButton.setOnClickListener(new View.OnClickListener() {  // 아이디 찾기 버튼 클릭
+//            @Override
+//            public void onClick(View view) {
+//                Intent registerIntent = new Intent(getApplicationContext(), EmailpwfindActivity.class);
+//                startActivity(registerIntent);
+//            }
+//        });
 
 
 

@@ -25,12 +25,13 @@
 
                 <TextView
                     android:id="@+id/info_text"
-                    android:textColor="#106897"
+                    android:textColor="#FFFFFF"
+                    android:background="@color/status_color"
                     android:textSize="18dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:gravity="center|left"/>
+                    android:gravity="center"/>
 
         </LinearLayout>
 

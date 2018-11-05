@@ -69,22 +69,14 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 if(holder.getAdapterPosition() == 0){
-                    Toast.makeText(v.getContext(),"상의-긴팔",Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(),"상의",Toast.LENGTH_LONG).show();
                     context.startActivity(new Intent(context,Top_longActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
                 else if(holder.getAdapterPosition() == 1){
-                    Toast.makeText(v.getContext(),"상의-반팔",Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context,Top_shortActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-                else if(holder.getAdapterPosition() == 2){
-                    Toast.makeText(v.getContext(),"하의-긴바지",Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(),"하의",Toast.LENGTH_LONG).show();
                     context.startActivity(new Intent(context,Bottom_longActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
-                else if(holder.getAdapterPosition() == 3){
-                    Toast.makeText(v.getContext(),"하의-반바지",Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context,Bottom_shortActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
-                else if(holder.getAdapterPosition() == 4){
+                else if(holder.getAdapterPosition() == 2){
                     Toast.makeText(v.getContext(),"아우터",Toast.LENGTH_LONG).show();
                     context.startActivity(new Intent(context,OuterActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }

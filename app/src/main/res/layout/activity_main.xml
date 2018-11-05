@@ -166,6 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/Calendar_Result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -201,16 +202,18 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/clothes"
                     android:layout_weight="1"
-                    android:layout_marginBottom="20px"
                     android:background="#FFFFFF"
+                    android:layout_marginBottom="5dp"
                     android:text="간편 코디" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="간편 코디"
                     android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:paddingBottom="15px"
+                    android:background="@color/status_color"
+                    android:textColor="#FFFFFF"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="5px"
                     />
             </LinearLayout>
             <LinearLayout
@@ -224,16 +227,18 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/wardrobe"
                     android:layout_weight="1"
-                    android:layout_marginBottom="20px"
                     android:background="#FFFFFF"
+                    android:layout_marginBottom="5dp"
                     android:text="내 옷장" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="내 옷장"
                     android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:paddingBottom="15px"
+                    android:background="@color/status_color"
+                    android:textColor="#FFFFFF"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="5px"
                     />
 
             </LinearLayout>
@@ -257,7 +262,8 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/chat"
                     android:layout_weight="1"
-                    android:layout_marginBottom="20px"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5px"
                     android:background="#FFFFFF"
                     android:text="내 옷 어때?" />
                 <TextView
@@ -265,8 +271,10 @@
                     android:layout_height="wrap_content"
                     android:text="내 옷 어때?"
                     android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:paddingBottom="25px"
+                    android:background="@color/status_color"
+                    android:textColor="#FFFFFF"
+
+                    android:paddingBottom="5px"
                     />
 
             </LinearLayout>
@@ -281,7 +289,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/consulting"
                     android:layout_weight="1"
-                    android:layout_marginBottom="20px"
+                    android:layout_marginBottom="5px"
                     android:background="#FFFFFF"
                     android:text="전문가님 도와주세요" />
                 <TextView
@@ -289,13 +297,19 @@
                     android:layout_height="wrap_content"
                     android:text="전문가님 도와주세요"
                     android:gravity="center"
-                    android:background="#FFFFFF"
-                    android:paddingBottom="25px"
+                    android:background="@color/status_color"
+                    android:textColor="#FFFFFF"
+                    android:paddingBottom="5px"
                     />
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
+    </LinearLayout>
 </LinearLayout>

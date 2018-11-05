@@ -30,10 +30,10 @@ public class How_clothActivity extends AppCompatActivity {
 
         List<Item> items = new ArrayList<>();
         Item[] item = new Item[ITEM_SIZE];
-        item[0] = new Item(R.drawable.a, " 제 옷 좀 봐주세요.");
-        item[1] = new Item(R.drawable.jw, "  내 혓바닥이 제일 길지");
-        item[2] = new Item(R.drawable.jy, "  코뿔소 닮은 사람 나와");
-        item[3] = new Item(R.drawable.cy, "  똥싸러 인천 간 똥창");
+        item[0] = new Item(R.drawable.cloth_01, "옷 색깔 어때요?.");
+        item[1] = new Item(R.drawable.cloth_02, "이 아우터 어디꺼죠?");
+        item[2] = new Item(R.drawable.cloth_03, "소개팅 코디 괜춘?");
+        item[3] = new Item(R.drawable.cloth_04, "이 옷은 어때요?");
 
         for (int i = 0; i < ITEM_SIZE; i++) {
             items.add(item[i]);
@@ -48,7 +48,9 @@ public class How_clothActivity extends AppCompatActivity {
         Intent intent=new Intent(this,SubActivity.class);
         startActivity(intent);
     }
+    void count(View view){
 
+    }
 
 }
 

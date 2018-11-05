@@ -64,19 +64,19 @@
         android:layout_weight="1">
 
 
-        <TextView
-            android:id="@+id/findID_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아이디 ＆ 비밀번호 찾기"
-            android:textColor="@color/status_color"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            android:text="|"
-            android:textColor="@color/status_color"/>
+        <!--<TextView-->
+            <!--android:id="@+id/findID_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="아이디 ＆ 비밀번호 찾기"-->
+            <!--android:textColor="@color/status_color"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10px"-->
+            <!--android:layout_marginRight="10px"-->
+            <!--android:text="|"-->
+            <!--android:textColor="@color/status_color"/>-->
         <TextView
             android:id="@+id/join_button"
             android:layout_width="wrap_content"

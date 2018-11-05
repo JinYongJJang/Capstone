@@ -3,6 +3,7 @@ package com.example.cy.cody_;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Bottom_longActivity extends AppCompatActivity{
@@ -26,7 +29,8 @@ public class Bottom_longActivity extends AppCompatActivity{
     private ListViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-
+    private File file;
+    private ArrayList Bottom_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,8 @@ public class Bottom_longActivity extends AppCompatActivity{
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.navigation_item_attachment:
-                        Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Intent MyInfo = new Intent(Bottom_longActivity.this, UserinfoActivity.class);
+                        startActivity(MyInfo);
                         break;
                     case R.id.nav_sub_menu_item01:
                         Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
@@ -72,6 +77,22 @@ public class Bottom_longActivity extends AppCompatActivity{
                 return true;
             }
         });
+
+        GridView gridView = (GridView) findViewById(R.id.gridview1);
+
+        Bottom_list= new ArrayList<>();
+
+        String rootSD = Environment.getExternalStorageDirectory().toString();
+        file = new File(rootSD+"/Pictures");
+        File[] list = file.listFiles();// SD 카드 전체 파일을 다 불러 오는 친구들
+
+        for(int i=0; i<list.length;i++){
+            if(list[i].getName().substring((list[i].getName().length()-11),(list[i].getName().length()-4)).equals("_Bottom")){
+                Bottom_list.add(list[i]);
+            };
+        }
+
+        gridView.setAdapter(new ImageAdapter(this,Bottom_list,"Bottom"));
 
     }
 

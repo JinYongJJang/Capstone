@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:id="@+id/parent_layout"
     android:layout_width="fill_parent"
@@ -26,45 +26,94 @@
             android:paddingTop="20dp"
             android:paddingRight="25dp"
             android:layout_gravity="right" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/Weather_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="3">
-        <TextView
-            android:id="@+id/title_text"
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background=" #99C98AFF"
+            android:textColor="#FFFFFF"
+            android:text="Next Cody"
+            android:layout_gravity="center"
+            android:id="@+id/cody_restart"/>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/my_font"
-            android:text="준비중 입니다."
-            android:textSize="80sp"
-            android:gravity="center"
-            android:background="#FFFFFF"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/title_text2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/my_font"
-            android:text="준비중 입니다."
-            android:textSize="80sp"
-            android:gravity="center"
-            android:background="#FFFFFF"
-            />
+            android:orientation="vertical"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+                <TextView
+                    android:textSize="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Top"/>
+                <ImageView
+                    android:id="@+id/top_cody"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+                <TextView
+                    android:textSize="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Bottom"/>
+                <ImageView
+                    android:id="@+id/bottom_cody"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+                <TextView
+                    android:textSize="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Outer"/>
+                <ImageView
+                    android:id="@+id/outer_cody"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
-
-
-
-
-</LinearLayout>
-
+</ScrollView>
 
