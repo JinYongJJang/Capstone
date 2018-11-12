@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,27 +25,27 @@
             </intent-filter>
         </activity>
         <activity android:name=".loadingActivity" />
-        <activity android:name=".ClosetActivity" />
-        <activity android:name=".Top_shortActivity" />
-        <activity android:name=".Top_longActivity" />
-        <activity android:name=".Bottom_longActivity" />
-        <activity android:name=".Bottom_shortActivity" />
-        <activity android:name=".OuterActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".Closet.ClosetActivity" />
+        <activity android:name=".Closet.Top_shortActivity" />
+        <activity android:name=".Closet.Top_longActivity" />
+        <activity android:name=".Closet.Bottom_longActivity" />
+        <activity android:name=".Closet.Bottom_shortActivity" />
+        <activity android:name=".Closet.OuterActivity" />
+        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".Login.RegisterActivity" />
         <activity
-            android:name=".EmailpwfindActivity"
+            android:name=".Login.EmailpwfindActivity"
             android:label="@string/title_activity_emailpwfind"
             android:theme="@style/AppTheme.StatusBar" />
-        <activity android:name=".EmailaccessActivity" />
+        <activity android:name=".Login.EmailaccessActivity" />
         <activity android:name=".Fast_codyActivity" />
-        <activity android:name=".How_clothActivity" />
+        <activity android:name=".How_Cloth.How_clothActivity" />
         <activity android:name=".ExpertActivity" />
-        <activity android:name=".Boardintro" />
-        <activity android:name=".SubActivity" />
-        <activity android:name=".CalendarActivity" />
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".UserinfoActivity"></activity>
+        <activity android:name=".How_Cloth.Boardintro" />
+        <activity android:name=".How_Cloth.SubActivity" />
+        <activity android:name=".Calendar.CalendarActivity" />
+        <activity android:name=".Closet.CameraActivity" />
+        <activity android:name=".Closet.UserinfoActivity"></activity>
     </application>
 
 </manifest>

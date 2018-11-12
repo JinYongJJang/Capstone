@@ -1,4 +1,4 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Weather;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;

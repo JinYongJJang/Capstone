@@ -1,4 +1,4 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Closet;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.cy.cody_.R;
 
 public class UserinfoActivity extends AppCompatActivity {
 

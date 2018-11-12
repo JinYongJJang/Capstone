@@ -1,4 +1,4 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Login;
 
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.cy.cody_.R;
 
 public class EmailaccessActivity extends AppCompatActivity {
 

@@ -1,9 +1,10 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Login;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,22 +13,36 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.cy.cody_.JsonRequest;
+import com.example.cy.cody_.MainActivity;
+import com.example.cy.cody_.R;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    EditText emailText;
+    EditText passwordText;
+
+    TextView joinButton;
+
+    Button loginButton;
+
+    String Email;
+    String Password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final EditText idText = (EditText) findViewById(R.id.idText);
-        final EditText passwordText = (EditText) findViewById(R.id.passwordText);
 
-        final TextView joinButton = (TextView) findViewById(R.id.join_button);
+        emailText = (EditText) findViewById(R.id.emailText);
+        passwordText = (EditText) findViewById(R.id.passwordText);
+
+        joinButton = (TextView) findViewById(R.id.join_button);
         //final TextView findIDButton = (TextView) findViewById(R.id.findID_button);
-        final Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton = (Button) findViewById(R.id.login_button);
 
         joinButton.setOnClickListener(new View.OnClickListener(){  // 회원가입 버튼 클릭
 
@@ -53,23 +68,36 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                final String UserEmail = idText.getText().toString();
-                final String UserPassword = passwordText.getText().toString();
+                Email = emailText.getText().toString();
+                Password = passwordText.getText().toString();
+
+                JSONObject json = new JSONObject();
+                try{
+                    json.put("Email", Email);
+                    json.put("Password", Password);
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try{
+                            Log.v("JIN_LOGIN", response);
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-                                String UserEmail = jsonResponse.getString("UserEmail");
-                                String UserPassword = jsonResponse.getString("UserPassword");
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("UserEmail", UserEmail);
-                                intent.putExtra("UserPassword", UserPassword);
-                                startActivity(intent);
+                                String Email = jsonResponse.getString("Email");
+                                String Name = jsonResponse.getString("Name");
+
+                                Intent intent = new Intent();
+                                intent.putExtra("Email", Email);
+                                intent.putExtra("Name", Name);
+                                //intent.putExtra("Password", Password);
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
                             else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -85,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                LoginRequest loginRequest = new LoginRequest(UserEmail, UserPassword, responseListener);
+                JsonRequest loginRequest = new JsonRequest(json, "http://113.198.229.173/Login.php", responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
             }

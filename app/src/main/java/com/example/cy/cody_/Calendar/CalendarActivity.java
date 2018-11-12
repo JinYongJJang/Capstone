@@ -1,4 +1,4 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Calendar;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.cy.cody_.R;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;

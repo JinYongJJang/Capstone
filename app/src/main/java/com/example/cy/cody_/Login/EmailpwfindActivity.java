@@ -1,9 +1,11 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Login;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+
+import com.example.cy.cody_.R;
 
 public class EmailpwfindActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;

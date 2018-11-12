@@ -23,6 +23,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.cy.cody_.Calendar.CalendarActivity;
+import com.example.cy.cody_.Closet.ClosetActivity;
+import com.example.cy.cody_.How_Cloth.How_clothActivity;
+import com.example.cy.cody_.Login.LoginActivity;
+import com.example.cy.cody_.Weather.GpsInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_ACCOUNT_PICKER = 1100;
     static final int REQUEST_AUTHORIZATION = 1101;
+    static final int REQUEST_LOGIN = 1104;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1102;
     static final int PERMISSIONS_ACCOUNT = 1103;
 
@@ -78,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
     TextView city;
     TextView weather;
     TextView country;
+    String User_Email;
+    String User_Name;
+
     private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
     private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
     private boolean isAccessFineLocation = false;
@@ -152,28 +161,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(closetintent);
             }
         });
-        ImageButton buttonCody = (ImageButton) findViewById(R.id.Fast_Cody);
-        buttonCody.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonFastCody = (ImageButton) findViewById(R.id.Fast_Cody);
+        buttonFastCody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent codyintent = new Intent(MainActivity.this,Fast_codyActivity.class);
                 startActivity(codyintent);
             }
         });
-        ImageButton buttonpro = (ImageButton) findViewById(R.id.How_Cloth);
-        buttonpro.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonHowCloth = (ImageButton) findViewById(R.id.How_Cloth);
+        buttonHowCloth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent prointent = new Intent(MainActivity.this,How_clothActivity.class);
-                startActivity(prointent);
+                Intent HowClothintent = new Intent(MainActivity.this,How_clothActivity.class);
+                HowClothintent.putExtra("Email", User_Email);
+                HowClothintent.putExtra("Name", User_Name);
+                startActivity(HowClothintent);
             }
         });
-        ImageButton buttonuser = (ImageButton) findViewById(R.id.Expert);
-        buttonuser.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonExpert = (ImageButton) findViewById(R.id.Expert);
+        buttonExpert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent userintent = new Intent(MainActivity.this,ExpertActivity.class);
-                startActivity(userintent);
+                Intent Expertintent = new Intent(MainActivity.this,ExpertActivity.class);
+                startActivity(Expertintent);
             }
         });
         Main_Login_Button = (TextView) findViewById(R.id.Main_Login_button);
@@ -181,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent LoginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(LoginIntent);
+                startActivityForResult(LoginIntent,REQUEST_LOGIN);
             }
         });
         Calendar_Result = (TextView) findViewById(R.id.Calendar_Result);
@@ -193,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        
     }
+
     private String getResultsFromApi() {
 
 //        if (!isGooglePlayServicesAvailable()) { // Google Play Services를 사용할 수 없는 경우
@@ -289,6 +300,16 @@ public class MainActivity extends AppCompatActivity {
             Intent data
     ) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case REQUEST_LOGIN:
+                    User_Email = data.getStringExtra("Email");
+                    User_Name = data.getStringExtra("Name");
+                    Main_Login_Button.setText(User_Email);
+                    break;
+            }
+
+        }
         switch (requestCode) {
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == RESULT_OK && data != null && data.getExtras() != null) {

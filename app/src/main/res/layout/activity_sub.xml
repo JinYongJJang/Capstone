@@ -55,6 +55,7 @@
             android:textSize="20dp" />
 
         <EditText
+            android:id="@+id/Title_Edit"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_marginLeft="80dp"
@@ -85,6 +86,7 @@
             android:textSize="18dp" />
 
         <EditText
+            android:id="@+id/Content_Edit"
             android:inputType="textImeMultiLine"
             android:lines="3"
             android:minLines="1"

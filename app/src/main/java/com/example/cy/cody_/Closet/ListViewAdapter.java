@@ -1,4 +1,4 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Closet;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.cy.cody_.R;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,9 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.How_Cloth;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import java.nio.channels.InterruptedByTimeoutException;
+import com.example.cy.cody_.R;
+
 import java.util.List;
 public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     Context context;
@@ -36,15 +37,18 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Item item = items.get(position);
-        Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
-        holder.image.setBackground(drawable);
-        holder.title.setText(item.getTitle());
+        //Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
+
+        holder.User_Name.setText(item.getUser_Name()); // User -> User_Name
+        holder.User_Picture.setBackgroundColor(200);  // User -> User_Picture
+        //holder.image.setBackground(drawable); // How_Cloth->Picture
+        holder.title.setText(item.getTitle());  // How_Cloth->Title
+
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(context,Boardintro.class);
                 context.startActivity(intent);
-
             }
         });
     }
@@ -55,12 +59,16 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView User_Picture;
+        TextView User_Name;
         ImageView image;
         TextView title;
         CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            User_Picture = (ImageView) itemView.findViewById(R.id.User_Picture);
+            User_Name = (TextView) itemView.findViewById(R.id.User_Name);
             image = (ImageView) itemView.findViewById(R.id.image);
             title = (TextView) itemView.findViewById(R.id.title);
             cardview = (CardView) itemView.findViewById(R.id.cardview);

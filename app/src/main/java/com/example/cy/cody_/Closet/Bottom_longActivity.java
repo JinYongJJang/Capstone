@@ -1,41 +1,38 @@
-package com.example.cy.cody_;
-
+package com.example.cy.cody_.Closet;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.example.cy.cody_.R;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class  Top_longActivity extends AppCompatActivity{
+public class Bottom_longActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout; // 서랍 레이아웃
     private RecyclerView mRecyclerView;
     private ListViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private File file;
-    private ArrayList Top_list;
+    private ArrayList Bottom_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_long);
-
+        setContentView(R.layout.activity_bottom_long);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -56,51 +53,43 @@ public class  Top_longActivity extends AppCompatActivity{
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.navigation_item_attachment:
-                        Intent MyInfo = new Intent(Top_longActivity.this, UserinfoActivity.class);
+                        Intent MyInfo = new Intent(Bottom_longActivity.this, UserinfoActivity.class);
                         startActivity(MyInfo);
                         break;
                     case R.id.nav_sub_menu_item01:
-                        Toast.makeText(Top_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item02:
-                        Toast.makeText(Top_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item03:
-                        Toast.makeText(Top_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item04:
-                        Toast.makeText(Top_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                 }
+
                 return true;
             }
         });
+
         GridView gridView = (GridView) findViewById(R.id.gridview1);
 
-        Top_list= new ArrayList<>();
+        Bottom_list= new ArrayList<>();
 
         String rootSD = Environment.getExternalStorageDirectory().toString();
         file = new File(rootSD+"/Pictures");
         File[] list = file.listFiles();// SD 카드 전체 파일을 다 불러 오는 친구들
 
         for(int i=0; i<list.length;i++){
-            if(list[i].getName().substring((list[i].getName().length()-8),(list[i].getName().length()-4)).equals("_top")){
-                Top_list.add(list[i]);
+            if(list[i].getName().substring((list[i].getName().length()-11),(list[i].getName().length()-4)).equals("_Bottom")){
+                Bottom_list.add(list[i]);
             };
         }
 
-        gridView.setAdapter(new ImageAdapter(this,Top_list,"Top"));
-
-
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(Top_longActivity.this, ""+position,Toast.LENGTH_SHORT).show();
-            }
-        });
-        Log.e("User Picture List",Top_list.toString());
+        gridView.setAdapter(new ImageAdapter(this,Bottom_list,"Bottom"));
 
     }
 

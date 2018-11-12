@@ -1,26 +1,20 @@
-package com.example.cy.cody_;
+package com.example.cy.cody_.Closet;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.cy.cody_.R;
 
-public class Top_shortActivity extends AppCompatActivity{
+public class Bottom_shortActivity extends AppCompatActivity{
     private DrawerLayout mDrawerLayout; // 서랍 레이아웃
     private RecyclerView mRecyclerView;
     private ListViewAdapter mAdapter;
@@ -31,7 +25,7 @@ public class Top_shortActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_top_short);
+        setContentView(R.layout.activity_bottom_short);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -52,19 +46,19 @@ public class Top_shortActivity extends AppCompatActivity{
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.navigation_item_attachment:
-                        Toast.makeText(Top_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item01:
-                        Toast.makeText(Top_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item02:
-                        Toast.makeText(Top_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item03:
-                        Toast.makeText(Top_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_sub_menu_item04:
-                        Toast.makeText(Top_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Bottom_shortActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
 
                 }
