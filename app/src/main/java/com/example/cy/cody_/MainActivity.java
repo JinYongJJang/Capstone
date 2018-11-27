@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             switch (requestCode){
-                case REQUEST_LOGIN:
+                case REQUEST_LOGIN:   // 로그인 버튼을 눌렀을 시
                     User_Email = data.getStringExtra("Email");
                     User_Name = data.getStringExtra("Name");
                     Main_Login_Button.setText(User_Email);

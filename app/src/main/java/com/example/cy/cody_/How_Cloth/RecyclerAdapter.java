@@ -2,11 +2,15 @@ package com.example.cy.cody_.How_Cloth;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +25,11 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     Context context;
     List<Item> items;
     int item_layout;
+    byte[] decodedString;
+    Bitmap decodeByte;
 
     public RecyclerAdapter(Context context, List<Item> items, int item_layout) {
+
         this.context = context;
         this.items = items;
         this.item_layout = item_layout;
@@ -37,17 +44,24 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Item item = items.get(position);
+
         //Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
 
         holder.User_Name.setText(item.getUser_Name()); // User -> User_Name
         holder.User_Picture.setBackgroundColor(200);  // User -> User_Picture
-        //holder.image.setBackground(drawable); // How_Cloth->Picture
-        holder.title.setText(item.getTitle());  // How_Cloth->Title
+        //holder.image.setBackground(drawable);
+
+        decodedString = Base64.decode(item.getImage(), Base64.DEFAULT);
+        decodeByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.image.setImageBitmap(decodeByte); // How_Cloth -> Cody_ID
+
+        holder.title.setText(item.getTitle());  // How_Cloth -> Title
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(context,Boardintro.class);
+                Intent intent = new Intent(context,Boardintro.class);
+                intent.putExtra("ID",item.getID());
                 context.startActivity(intent);
             }
         });

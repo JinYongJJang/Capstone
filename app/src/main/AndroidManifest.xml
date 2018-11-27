@@ -45,7 +45,8 @@
         <activity android:name=".How_Cloth.SubActivity" />
         <activity android:name=".Calendar.CalendarActivity" />
         <activity android:name=".Closet.CameraActivity" />
-        <activity android:name=".Closet.UserinfoActivity"></activity>
+        <activity android:name=".Closet.UserinfoActivity" />
+        <activity android:name=".How_Cloth.PictureSelect"></activity>
     </application>
 
 </manifest>

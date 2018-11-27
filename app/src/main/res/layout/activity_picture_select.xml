@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+    <LinearLayout
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1">
+            <Button
+                android:id="@+id/Select_Button_HC"
+                android:text="선택"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight = "0.9">
+            <ListView
+                android:id="@+id/ListView_HC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@color/status_color">
+            </ListView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

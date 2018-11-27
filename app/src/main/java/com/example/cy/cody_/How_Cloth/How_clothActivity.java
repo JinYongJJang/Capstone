@@ -36,7 +36,7 @@ import java.util.List;
 
 public class How_clothActivity extends AppCompatActivity {
     static final int ITEM_SIZE = 4;
-    static final int REQUEST_LOGIN = 1105;
+    static final int REQUEST_LOGIN = 1301;
     int Page_Num = 1;
 
     String Email = null;
@@ -217,11 +217,13 @@ public class How_clothActivity extends AppCompatActivity {
                      StringBuilder stringBuilder = new StringBuilder();
                      String line = null;
 
+
                      while( (line = bufferedReader.readLine()) != null){
                          if( stringBuilder.length() > 0){
                              stringBuilder.append("\n");
                          }
                          stringBuilder.append(line);
+                         Log.v("JIN_line", line.toString());
                      }
 
                      JSONObject jsonResponse = new JSONObject(stringBuilder.toString());
@@ -232,8 +234,9 @@ public class How_clothActivity extends AppCompatActivity {
                      for(int i=0; i<jsonArray.length(); i++) {
                          JSONObject dataJsonObj = jsonArray.getJSONObject(i);
                          items.add(new Item(
+                                 dataJsonObj.getInt("ID"),
                                  dataJsonObj.getString("Title"),
-                                 dataJsonObj.getString("Picture"),
+                                 dataJsonObj.getString("Cody_ID"),
                                  dataJsonObj.getString("Name"),
                                  dataJsonObj.getString("User_Picture")
                          ));

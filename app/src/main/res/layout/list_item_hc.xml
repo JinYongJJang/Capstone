@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/Top_Image"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginRight="5dp"/>
+    <ImageView
+        android:id="@+id/Bottom_Image"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_marginRight="5dp"/>
+
+    <ImageView
+        android:id="@+id/Coat_Image"
+        android:layout_width="125dp"
+        android:layout_height="125dp" />
+
+</LinearLayout>

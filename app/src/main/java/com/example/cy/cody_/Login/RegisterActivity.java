@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                     json.put("Password", Password);
                     json.put("User_Picture", User_Picture);
                     json.put("User_Bool", User_Bool);
+                    // 모든 값들을 json object로 생성
                 }
                 catch (JSONException e){
                     e.printStackTrace();
@@ -71,21 +72,13 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
+                            // php로 받은 응답을 Json Object로 생성
                             boolean success = jsonResponse.getBoolean("success");
-                            if (success) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("회원 등록에 성공했습니다.")
-                                        .setPositiveButton("확인", null)
-                                        .create()
-                                        .show();
+                            if (success) {  // 성공 시
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(intent);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("회원 등록에 실패했습니다.")
-                                        .setNegativeButton("다시시도", null)
-                                        .create()
-                                        .show();
+                            }
+                            else {  // 실패  시
 
                             }
                         } catch (JSONException e) {

@@ -13,7 +13,7 @@ public class JsonRequest extends StringRequest {
 
     public JsonRequest(JSONObject json, String URL, Response.Listener<String> listener){
         super(com.android.volley.Request.Method.POST, URL, listener, null);
-        parameters = new HashMap<>();
+        parameters = new HashMap<>();   // Map 형식으로 만들어서 반환
         parameters.put("user", json.toString());
 
     }

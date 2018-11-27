@@ -1,11 +1,15 @@
 package com.example.cy.cody_.How_Cloth;
 
 public class Item {
+    int ID;
     String User_Name;
     String User_Picture;  /*************** 이거 String 바꿔야함 ************/
     String image;
     String title;
 
+    int getID (){
+        return this.ID;
+    }
     String getUser_Name(){
         return this.User_Name;
     }
@@ -19,7 +23,8 @@ public class Item {
         return this.title;
     }
 
-    Item(String title, String image, String user_name, String user_picture) {
+    Item(int id, String title, String image, String user_name, String user_picture) {
+        this.ID = id;
         this.User_Name = user_name;
         this.User_Picture = user_picture;
         this.image = image;
