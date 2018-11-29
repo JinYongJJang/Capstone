@@ -192,6 +192,8 @@ public class How_clothActivity extends AppCompatActivity {
                      JSONObject json = new JSONObject();
                      json.put("Page_Num", String.valueOf(Page_Num));
 
+                     Log.v("JIN", json.toString());
+
                      URL url  = new URL("http://113.198.229.173/How_Cloth_List.php");
                      urlConnection = (HttpURLConnection) url.openConnection();
 

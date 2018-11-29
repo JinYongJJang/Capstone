@@ -81,7 +81,9 @@ public class ImageAdapter extends BaseAdapter {
         }
         //Log.e("User bitmap", bitmap.get(position).toString());
         if(Check.equals("Top"))
-            imageView.setImageBitmap((BitmapFactory.decodeFile(Top_bitmap.get(position).getAbsolutePath())));
+            imageView.setImageBitmap(
+                    (BitmapFactory.decodeFile(
+                            Top_bitmap.get(position).getAbsolutePath())));
         else if(Check.equals("Outer"))
             imageView.setImageBitmap((BitmapFactory.decodeFile(Outer_bitmap.get(position).getAbsolutePath())));
         else if(Check.equals("Bottom"))

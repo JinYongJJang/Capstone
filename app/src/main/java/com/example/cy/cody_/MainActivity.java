@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,10 +24,16 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.cy.cody_.Calendar.CalendarActivity;
 import com.example.cy.cody_.Closet.ClosetActivity;
+import com.example.cy.cody_.Expert.ExpertActivity;
 import com.example.cy.cody_.How_Cloth.How_clothActivity;
+import com.example.cy.cody_.How_Cloth.SubActivity;
 import com.example.cy.cody_.Login.LoginActivity;
 import com.example.cy.cody_.Weather.GpsInfo;
 import com.google.android.gms.common.ConnectionResult;
@@ -44,6 +52,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -84,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
     TextView city;
     TextView weather;
     TextView country;
-    String User_Email;
-    String User_Name;
+    String User_Email = null;
+    String User_Name = null;
 
     private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
     private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     double longitude = gps.getLongitude();
                     Log.v("GPS Check ", String.valueOf(latitude)+" "+String.valueOf(longitude));
                     JsonLoadingTask Thread_Json = new JsonLoadingTask();
-                    Thread_Json.execute();//Async스레드를 시작
+                    Thread_Json.execute(); // Async스레드를 시작
                 } else {
                     // GPS 를 사용할수 없으므로
                     gps.showSettingsAlert();
@@ -152,13 +161,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
 
-
         ImageButton buttonCloset = (ImageButton) findViewById(R.id.Closet);
         buttonCloset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent closetintent = new Intent(MainActivity.this,ClosetActivity.class);
-                startActivity(closetintent);
+                if (User_Email == null) {   // 로그인이 안되어 있을 때
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(" 오늘 뭐 입지?");
+                    builder.setMessage("로그인이 필요합니다");
+                    builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent LoginIntent = new Intent(MainActivity.this, LoginActivity.class);  // 로그인페이지로 이동시킨후
+                            startActivityForResult(LoginIntent, REQUEST_LOGIN);  // onActivityResult 로 이동
+                        }
+                    });
+                    builder.setNegativeButton("아니오",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(),"로그인 후 이용가능합니다",Toast.LENGTH_LONG).show();
+                                }
+                            });
+                    builder.show();
+                }
+                else { // 로그인이 되어 있을 경우
+                    Intent closetintent = new Intent(MainActivity.this,ClosetActivity.class);
+                    closetintent.putExtra("Email", User_Email);
+                    closetintent.putExtra("Name", User_Name);
+                    startActivity(closetintent);
+                }
             }
         });
         ImageButton buttonFastCody = (ImageButton) findViewById(R.id.Fast_Cody);
@@ -183,8 +214,31 @@ public class MainActivity extends AppCompatActivity {
         buttonExpert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Expertintent = new Intent(MainActivity.this,ExpertActivity.class);
-                startActivity(Expertintent);
+                if(User_Email != null ) {
+                    Intent Expertintent = new Intent(MainActivity.this, ExpertActivity.class);
+                    Expertintent.putExtra("Email", User_Email);
+                    Expertintent.putExtra("Name", User_Name);
+                    startActivity(Expertintent);
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(" 오늘 뭐 입지?");
+                    builder.setMessage("로그인이 필요합니다, 로그인 하시겠습니까?");
+                    builder.setPositiveButton("예",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent LoginIntent = new Intent(MainActivity.this, LoginActivity.class);  // 로그인페이지로 이동시킨후
+                                    startActivityForResult(LoginIntent, REQUEST_LOGIN);  // onActivityResult 로 이동
+                                }
+                            });
+                    builder.setNegativeButton("아니오",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "아니오를 선택했습니다.", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                    builder.show();
+                }
             }
         });
         Main_Login_Button = (TextView) findViewById(R.id.Main_Login_button);

@@ -106,6 +106,10 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
             int w = camera.getParameters().getPictureSize().width;
             int h = camera.getParameters().getPictureSize().height;
+//
+//            int w = 1280;
+//            int h = 720;
+
 
             int orientation = setCameraDisplayOrientation(CameraActivity.this, Camera.CameraInfo.CAMERA_FACING_BACK, camera);
 
@@ -176,7 +180,25 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         camera = Camera.open();
+
+        Camera.Parameters parameters= camera.getParameters();
+        parameters.setPreviewSize(1280,720);  // 화면에 보여지는 크기
+        parameters.setPictureSize(1280,720);  // 저장되는 크기
+        camera.setParameters(parameters);
+
         camera.setDisplayOrientation(90);  // 보여지는 화면을 90도로 회전
+
+//        // 카메라의 회전이 가로/세로일때 화면을 설정한다.  // 실험 안해봄
+//        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+//            parameters.set("orientation", "portrait");
+//            mCamera.setDisplayOrientation(90);
+//            parameters.setRotation(90);
+//        } else {
+//            parameters.set("orientation", "landscape");
+//            mCamera.setDisplayOrientation(0);
+//            parameters.setRotation(0);
+//        }
+
     }
 
     @Override

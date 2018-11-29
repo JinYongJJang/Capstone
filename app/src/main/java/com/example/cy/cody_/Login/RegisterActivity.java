@@ -75,8 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
                             // php로 받은 응답을 Json Object로 생성
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {  // 성공 시
-                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                startActivity(intent);
+//                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+//                                startActivity(intent);
+                                finish();
                             }
                             else {  // 실패  시
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -160,7 +161,25 @@ public class SubActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i){
                     case 0:
-                        Toast.makeText(getApplicationContext(),"갤러리.",Toast.LENGTH_LONG).show();
+
+                        Intent Gallery_Intent = new Intent(Intent.ACTION_PICK);
+                        Gallery_Intent.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                        Gallery_Intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        Gallery_Intent.setType("image/*");
+                        startActivityForResult(Gallery_Intent, GALLERY_CODE);
+//                        Intent Gallery_Intent = new Intent();
+//                        Gallery_Intent.setData(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//                        Gallery_Intent.setAction(Intent.ACTION_GET_CONTENT);
+//                        Gallery_Intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                        Gallery_Intent.setType("image/*");
+//                        startActivityForResult(Gallery_Intent, GALLERY_CODE);
+
+//                        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//                        //사진을 여러개 선택할수 있도록 한다
+//                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//                        intent.setType("image/*");
+//                        startActivityForResult(Intent.createChooser(intent, "Select Picture"),  PICTURE_REQUEST_CODE);
+
                         break;
                     case 1:
                         Toast.makeText(getApplicationContext(), "사진",Toast.LENGTH_LONG).show();

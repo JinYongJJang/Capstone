@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/user" />
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="user"
+            android:textColor="#A566FF"
+            android:textSize="25dp" />
+
+        <Button
+            android:id="@+id/managersaveboa"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_corner"
+            android:text="저장"
+            android:onClick="onClick"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="25dp"
+            android:text="제목:"
+            android:textColor="#C98AFF"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/Title_Edit"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="-32dp"
+            android:hint="input"
+            android:theme="@style/EditTheme" />
+
+        <ImageView
+            android:id="@+id/managerimageview"
+            android:layout_width="290dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="13dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="300dp"
+            android:maxWidth="290dp"
+            android:src="@drawable/attachimageview" />
+
+        <Button
+            android:layout_width="287dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="#A566FF"
+            android:text="사진 선택"
+            android:id="@+id/manager_get_pic"
+            android:onClick="onClick"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/Content_Edit"
+            android:inputType="textImeMultiLine"
+            android:lines="3"
+            android:minLines="1"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:scrollHorizontally="false"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:theme="@style/EditTheme"
+            android:hint="내용을 작성하세요."/>
+    </LinearLayout>
+</LinearLayout>

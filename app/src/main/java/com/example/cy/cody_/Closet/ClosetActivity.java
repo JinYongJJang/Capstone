@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,11 +18,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +34,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.cy.cody_.How_Cloth.SubActivity;
+import com.example.cy.cody_.JsonRequest;
 import com.example.cy.cody_.R;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -51,14 +59,23 @@ import com.google.api.services.vision.v1.model.Image;
 import com.google.api.services.vision.v1.model.ImageProperties;
 import com.google.api.services.vision.v1.model.SafeSearchAnnotation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ClosetActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    HttpTransport httpTransport;
+    JsonFactory jsonFactory;
+    Vision vision;
+    String User_Email;
+    String User_Name;
     private DrawerLayout mDrawerLayout; // 서랍 레이아웃
     private RecyclerView mRecyclerView;
     private ListViewAdapter mAdapter;
@@ -66,6 +83,9 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
     private Button picture;
     private static ArrayList<item> itemArrayList;
     File file;
+    File fileNew;
+    String sort;
+    String Sortt = null;
 
     Uri uri;
     private  static boolean signal = false;
@@ -108,6 +128,27 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet);
+
+
+
+        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
+        Intent GetIntent = getIntent();
+        User_Email = GetIntent.getExtras().getString("Email");
+        User_Name = GetIntent.getExtras().getString("Name");
+        /*************************************************************************************/
+
+
+
+        httpTransport = AndroidHttp.newCompatibleTransport();
+        jsonFactory = GsonFactory.getDefaultInstance();
+
+        VisionRequestInitializer requestInitializer = new VisionRequestInitializer(CLOUD_VISION_API_KEY);
+
+        Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
+        builder.setVisionRequestInitializer(requestInitializer);
+
+        vision = builder.build();
+
 
 
 
@@ -167,9 +208,9 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
            // 리스트뷰
         itemArrayList = new ArrayList<>();
         //ArrayList에 값 추가하기
-        itemArrayList.add(new item("상의",  R.drawable.top));
-        itemArrayList.add(new item("하의",  R.drawable.bottom));
-        itemArrayList.add(new item("아우터",  R.drawable.outer));
+        itemArrayList.add(new item("상의",  R.drawable.top, User_Email));
+        itemArrayList.add(new item("하의",  R.drawable.bottom, User_Email));
+        itemArrayList.add(new item("아우터",  R.drawable.outer, User_Email));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);//옵션
@@ -185,10 +226,12 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
     public class item {
         String name;
         int photo;
+        String User_Email;
 
-        public item(String name, int photo) {
+        public item(String name, int photo, String User_Email) {
             this.name = name;
             this.photo = photo;
+            this.User_Email = User_Email;
         }
 
         public String getName() {
@@ -197,6 +240,7 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
         public int getPhoto() {
             return photo;
         }
+        public String getUser_Email(){return User_Email;}
     }
 //    @Override
 //    protected void onResume() {
@@ -249,7 +293,7 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
             file = new File(dir,FileName);
 
             try{
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);  // uri 를 bitmap으로 변환
 
 
                 //imageView.setImageURI(uri);
@@ -257,12 +301,13 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
 
                 callCloudVision(bitmap,feature);
             }
+//            catch(JSONException e){
+//                e.printStackTrace();
+//            }
             catch (Exception e){
                 //Log.e("JIN_ERR",e.toString());
                 e.printStackTrace();
             }
-
-
         }
     }
 
@@ -298,15 +343,7 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
             protected String doInBackground(Object... params) {
                 try {
                     Log.v("JIN", "api 실행중");
-                    HttpTransport httpTransport = AndroidHttp.newCompatibleTransport();
-                    JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
-                    VisionRequestInitializer requestInitializer = new VisionRequestInitializer(CLOUD_VISION_API_KEY);
-
-                    Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
-                    builder.setVisionRequestInitializer(requestInitializer);
-
-                    Vision vision = builder.build();
 
                     BatchAnnotateImagesRequest batchAnnotateImagesRequest = new BatchAnnotateImagesRequest();
                     batchAnnotateImagesRequest.setRequests(annotateImageRequests);
@@ -329,8 +366,12 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
                 //visionAPIData.setText(result);
                 //imageUploadProgress.setVisibility(View.INVISIBLE);
                 Log.v("JIN",result);
+
+
+
             }
         }.execute();
+
     }
 
     @NonNull
@@ -397,52 +438,72 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
         return message;
     }
 
-    private String formatAnnotation(List<EntityAnnotation> entityAnnotation) {
+    private final String formatAnnotation(List<EntityAnnotation> entityAnnotation) {
         String message = "\n";
-        int[] count = {0, 0, 0};
-
         String rename = "null.jpg";
-        if (entityAnnotation != null) {
-            for (EntityAnnotation entity : entityAnnotation) {
-                message = message + "    " + entity.getDescription() + " " + entity.getScore();
-                float per=0;
-                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.70){
-                    for(int i=0; i<Top.length; i++){
-                        if(Top[i].equals(entity.getDescription())){
-                            if(entity.getScore() > per){
-                                rename = "_top.jpg";
-                                per = entity.getScore();
-                            }
-                            Log.v("JIN", "kbkjbk "+Top[i]);
 
+        if (entityAnnotation != null) {
+            for (EntityAnnotation entity : entityAnnotation) {  // 점수가 높은 것 부터 뽑아옴
+
+                message = message + "  " + entity.getDescription() + " " + entity.getScore();
+                float per = 0;
+                boolean check = false;
+                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.70){
+                    if(check == false){
+                        for(int i=0; i<Top.length; i++){
+                            if(Top[i].equals(entity.getDescription())){
+//                            if(entity.getScore() > per){
+//                                rename = "_top.jpg";
+//                                per = entity.getScore();
+//                            }
+                                check = true;
+                                sort = "Top"; // php를 이용하여 상의란 것을 전달
+                                rename = User_Email+"_top.jpg";
+                                Log.v("JIN", "kbkjbk "+Top[i]);
+                            }
                         }
                     }
-                    for(int i=0; i<Bottom.length; i++){
-                        if(Bottom[i].equals(entity.getDescription())){
-                            if(entity.getScore() > per){
-                                rename = "_Bottom.jpg";
-                                per = entity.getScore();
+                    if(check == false){
+                        for(int i=0; i<Bottom.length; i++){
+                            if(Bottom[i].equals(entity.getDescription())){
+//                            if(entity.getScore() > per){
+//                                rename = "_Bottom.jpg";
+//                                per = entity.getScore();
+//                            }
+                                check = true;
+                                sort = "Bottom";
+                                rename = User_Email+"_Bottom.jpg";
+                                Log.v("JIN", "kbkjbk "+Bottom[i]);
                             }
-                            Log.v("JIN", "kbkjbk "+Bottom[i]);
                         }
                     }
-                    for(int i=0; i<Outer.length; i++) {
-                        if (Outer[i].equals(entity.getDescription())) {
-                            if(entity.getScore() > per){
-                                rename = "_Outer.jpg";
-                                per = entity.getScore();
+                    if(check == false){
+                        for(int i=0; i<Outer.length; i++) {
+                            if (Outer[i].equals(entity.getDescription())) {
+//                            if(entity.getScore() > per){
+//                                rename = "_Outer.jpg";
+//                                per = entity.getScore();
+//                            }
+                                check = true;
+                                sort = "Outer";
+                                rename = User_Email+"_Outer.jpg";
+                                Log.v("JIN", "kbkjbk " + Outer[i]);
                             }
-                            Log.v("JIN", "kbkjbk " + Outer[i]);
                         }
+                    }
+
+                    if(check != false){
+                        break;
                     }
                 }
+
                 message += "\n";
-                Arrays.sort(count);
+//                Arrays.sort(count);
 
             }
             String chang_name = file.getName();
-            String result = chang_name.substring(0,chang_name.length()-4);
-            File fileNew = new File(file.getParent(),result+rename);
+            String result = chang_name.substring(0,chang_name.length()-4);  // ***********.jpg 중    .jpg 삭제
+            fileNew = new File(file.getParent(),result+rename);
             try {
                 fileNew.createNewFile();
             } catch (IOException e) {
@@ -454,9 +515,19 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
                     Log.v("JIN_ERRRRRRRRRRRR","이름 변경 에러 : " + file);
                 }
             }
+
+            if(rename != "null.jpg"){
+                Sort_Clothes(sort);
+            }
+            else{
+                //Toast.makeText(ClosetActivity.this,"다시 찍어라", Toast.LENGTH_SHORT).show();
+            }
         } else {
             message = "No Encontrado";
         }
+        Log.v("JIN_fileName", fileNew.getName()+ "    " +  fileNew.getAbsolutePath());
+
+
         return message;
 
     }
@@ -472,6 +543,60 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public final void Sort_Clothes(String sort){
+
+        /*********여기 해야해!@~!~!~!!@!********/
+
+        Bitmap bit = BitmapFactory.decodeFile(fileNew.getAbsolutePath());
+
+        ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 100, byteArray);  // jpeg 압축
+        byte[] ImgByte = byteArray.toByteArray();
+        String encodingImage = Base64.encodeToString(ImgByte, Base64.DEFAULT);
+        Log.v("JIN_Encode", encodingImage);
+
+        try{
+            JSONObject json = new JSONObject();
+            json.put("Image", encodingImage);
+            json.put("Name", fileNew.getName());
+            json.put("Email", User_Email);
+            json.put("sort", sort);
+            Log.v("JIN", json.toString());
+
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try{
+                        Log.v("JIN_Res", response);
+                        JSONObject jsonResponse = new JSONObject(response);
+
+                        boolean success = jsonResponse.getBoolean("success");
+
+                        if(success){
+                            Toast.makeText(ClosetActivity.this, Sortt, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(ClosetActivity.this);
+                            builder.setMessage("보내기 실패")
+                                    .create()
+                                    .show();
+                        }
+                    }
+                    catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            JsonRequest request = new JsonRequest(json, "http://113.198.229.173/Sort.php", responseListener);
+            RequestQueue queue = Volley.newRequestQueue(ClosetActivity.this);
+            queue.add(request);
+        }
+        catch(JSONException e){
+            e.printStackTrace();
+        }
     }
 
 }

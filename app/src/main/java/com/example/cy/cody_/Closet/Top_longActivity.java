@@ -32,17 +32,24 @@ public class  Top_longActivity extends AppCompatActivity{
 
     private File file;
     private ArrayList Top_list;
+    String Email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_long);
 
+        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
+        Intent GetIntent = getIntent();
+        Email = GetIntent.getExtras().getString("Email");
+        /*************************************************************************************/
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);// 뒤로가기 버튼
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu); // 뒤로가기 버튼
         actionBar.setDisplayHomeAsUpEnabled(true); // 네비게이션 메뉴를 사용하기 위한 코드
 
         mDrawerLayout = findViewById(R.id.drawer_layout); // 네비게이션 메뉴 사용 객체
@@ -73,7 +80,6 @@ public class  Top_longActivity extends AppCompatActivity{
                     case R.id.nav_sub_menu_item04:
                         Toast.makeText(Top_longActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         break;
-
                 }
                 return true;
             }
@@ -87,12 +93,12 @@ public class  Top_longActivity extends AppCompatActivity{
         File[] list = file.listFiles();// SD 카드 전체 파일을 다 불러 오는 친구들
 
         for(int i=0; i<list.length;i++){
-            if(list[i].getName().substring((list[i].getName().length()-8),(list[i].getName().length()-4)).equals("_top")){
+            if(list[i].getName().substring( (list[i].getName().length()-8), (list[i].getName().length()-4) ).equals("_top")){  // 맨 뒷글자 비교
                 Top_list.add(list[i]);
-            };
+            }
         }
 
-        gridView.setAdapter(new ImageAdapter(this,Top_list,"Top"));
+        gridView.setAdapter(new ImageAdapter(this, Top_list,"Top"));
 
 
 
@@ -102,8 +108,6 @@ public class  Top_longActivity extends AppCompatActivity{
                 Toast.makeText(Top_longActivity.this, ""+position,Toast.LENGTH_SHORT).show();
             }
         });
-        Log.e("User Picture List",Top_list.toString());
-
     }
 
 

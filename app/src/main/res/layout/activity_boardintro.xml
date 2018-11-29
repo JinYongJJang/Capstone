@@ -38,7 +38,7 @@
                     android:id="@+id/HC_Show_Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ㅁㄴㅇㄹ"/>
+                    android:text="수정"/>
             </LinearLayout>
 
         </LinearLayout>

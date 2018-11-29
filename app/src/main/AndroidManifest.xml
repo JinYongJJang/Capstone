@@ -40,13 +40,14 @@
         <activity android:name=".Login.EmailaccessActivity" />
         <activity android:name=".Fast_codyActivity" />
         <activity android:name=".How_Cloth.How_clothActivity" />
-        <activity android:name=".ExpertActivity" />
         <activity android:name=".How_Cloth.Boardintro" />
         <activity android:name=".How_Cloth.SubActivity" />
         <activity android:name=".Calendar.CalendarActivity" />
         <activity android:name=".Closet.CameraActivity" />
         <activity android:name=".Closet.UserinfoActivity" />
-        <activity android:name=".How_Cloth.PictureSelect"></activity>
+        <activity android:name=".How_Cloth.PictureSelect" />
+        <activity android:name=".Expert.ExpertActivity" />
+        <activity android:name=".Expert.ManagerSubActivity"></activity>
     </application>
 
 </manifest>

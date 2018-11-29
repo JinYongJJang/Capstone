@@ -67,20 +67,28 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ViewHo
         holder.mPhoto.setImageResource(mDataset.get(position).getPhoto());
         final int pos = position;
 
+
         holder.cv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(holder.getAdapterPosition() == 0){
                     Toast.makeText(v.getContext(),"상의",Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context,Top_longActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+
+                    context.startActivity(new Intent(context,Top_longActivity.class)
+                            .putExtra("Email", mDataset.get(position).getUser_Email())
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
                 else if(holder.getAdapterPosition() == 1){
                     Toast.makeText(v.getContext(),"하의",Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context,Bottom_longActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    context.startActivity(new Intent(context,Bottom_longActivity.class)
+                            .putExtra("Email", mDataset.get(position).getUser_Email())
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
                 else if(holder.getAdapterPosition() == 2){
                     Toast.makeText(v.getContext(),"아우터",Toast.LENGTH_LONG).show();
-                    context.startActivity(new Intent(context,OuterActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    context.startActivity(new Intent(context,OuterActivity.class)
+                            .putExtra("Email", mDataset.get(position).getUser_Email())
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
             }
         });
