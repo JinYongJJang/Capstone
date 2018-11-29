@@ -1,7 +1,9 @@
 package com.example.cy.cody_.Closet;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.NavigationView;
@@ -19,9 +21,23 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.cy.cody_.How_Cloth.ListViewAdapter_HC;
+import com.example.cy.cody_.How_Cloth.ListViewItem_HC;
 import com.example.cy.cody_.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class  Top_longActivity extends AppCompatActivity{
@@ -31,8 +47,9 @@ public class  Top_longActivity extends AppCompatActivity{
     private RecyclerView.LayoutManager mLayoutManager;
 
     private File file;
-    private ArrayList Top_list;
+    private ArrayList<String> Top_list;
     String Email;
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +61,7 @@ public class  Top_longActivity extends AppCompatActivity{
         Email = GetIntent.getExtras().getString("Email");
         /*************************************************************************************/
 
+        gridView = (GridView) findViewById(R.id.gridview1);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,21 +102,24 @@ public class  Top_longActivity extends AppCompatActivity{
                 return true;
             }
         });
-        GridView gridView = (GridView) findViewById(R.id.gridview1);
 
-        Top_list= new ArrayList<>();
 
-        String rootSD = Environment.getExternalStorageDirectory().toString();
-        file = new File(rootSD+"/Pictures");
-        File[] list = file.listFiles();// SD 카드 전체 파일을 다 불러 오는 친구들
+        AsyncTask_Top();
 
-        for(int i=0; i<list.length;i++){
-            if(list[i].getName().substring( (list[i].getName().length()-8), (list[i].getName().length()-4) ).equals("_top")){  // 맨 뒷글자 비교
-                Top_list.add(list[i]);
-            }
-        }
 
-        gridView.setAdapter(new ImageAdapter(this, Top_list,"Top"));
+
+
+
+
+//        String rootSD = Environment.getExternalStorageDirectory().toString();
+//        file = new File(rootSD+"/Pictures");
+//        File[] list = file.listFiles();// SD 카드 전체 파일을 다 불러 오는 친구들
+//
+//        for(int i=0; i<list.length;i++){
+//            if(list[i].getName().substring( (list[i].getName().length()-8), (list[i].getName().length()-4) ).equals("_top")){  // 맨 뒷글자 비교
+//                Top_list.add(list[i]);
+//            }
+//        }
 
 
 
@@ -138,5 +159,89 @@ public class  Top_longActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @SuppressLint("StaticFieldLeak")
+    private void AsyncTask_Top() {
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected void onPreExecute() {
+                Top_list= new ArrayList<>();
+            }
+
+            @Override
+            protected String doInBackground(String... strings) {
+                final HttpURLConnection urlConnection_HC;
+                try{
+                    /*****************************                전송                 *********************************/
+                    JSONObject json = new JSONObject();
+                    json.put("Email", Email);
+
+                    URL url = new URL("http://113.198.229.173/Top.php");
+                    urlConnection_HC = (HttpURLConnection) url.openConnection();
+
+                    urlConnection_HC.setRequestMethod("POST");  // 요청방식 설정
+                    urlConnection_HC.setDoOutput(true);  // 서버로 응답을 보내겠다.
+                    urlConnection_HC.setDoInput(true); // 서버로부터 응답을 받겠다.
+                    urlConnection_HC.setConnectTimeout(5000);  // 응답 대기시간 설정
+
+                    OutputStream OutputStream_HC = urlConnection_HC.getOutputStream();
+                    PrintWriter writer = new PrintWriter(new OutputStreamWriter(OutputStream_HC, "UTF-8"));
+
+                    writer.write("user=" + json.toString());
+                    writer.flush();
+                    /****************************************************************************************************/
+
+                    urlConnection_HC.connect();
+                    BufferedReader bufferedReader_Top = new BufferedReader(new InputStreamReader(urlConnection_HC.getInputStream(), "UTF-8"));
+                    StringBuilder stringBuilder_Top = new StringBuilder();
+                    String line = null;
+                    while( (line = bufferedReader_Top.readLine()) != null){
+                        if( stringBuilder_Top.length() > 0){
+                            stringBuilder_Top.append("\n");
+                        }
+                        stringBuilder_Top.append(line);
+                        Log.v("JIN", line);
+                    }
+
+                    JSONObject jsonResponse = new JSONObject(stringBuilder_Top.toString());
+                    Log.v("JIN_res", jsonResponse.toString());
+                    JSONArray jsonArray = new JSONArray(jsonResponse.getString("response"));
+                    Log.v("JIN_ARR", String.valueOf( jsonArray.toString() ) );
+
+                    for(int i=0; i < jsonArray.length(); i++){
+                        JSONObject DataJsonObject = jsonArray.getJSONObject(i);
+                        Top_list.add( DataJsonObject.getString("Top_file") );
+
+                    }
+
+                    Log.v("JIN_TOP", Top_list.toString());
+
+
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+
+                gridView.setAdapter( new ImageAdapter(Top_longActivity.this, Top_list, "Top") );
+
+            }
+        }.execute();
     }
 }

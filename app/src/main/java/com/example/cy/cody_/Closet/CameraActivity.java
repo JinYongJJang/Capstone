@@ -182,8 +182,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         camera = Camera.open();
 
         Camera.Parameters parameters= camera.getParameters();
-        parameters.setPreviewSize(1280,720);  // 화면에 보여지는 크기
-        parameters.setPictureSize(1280,720);  // 저장되는 크기
+        parameters.setPreviewSize(640,480);  // 화면에 보여지는 크기
+        parameters.setPictureSize(640,480);  // 저장되는 크기
         camera.setParameters(parameters);
 
         camera.setDisplayOrientation(90);  // 보여지는 화면을 90도로 회전

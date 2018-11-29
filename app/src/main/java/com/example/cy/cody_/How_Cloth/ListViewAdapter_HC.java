@@ -46,7 +46,7 @@ public class ListViewAdapter_HC extends BaseAdapter {
     }
 
     @Override
-    public View getView(int postion, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
             convertView = Inflater.inflate(this.Layout, parent, false);
         }
@@ -55,15 +55,15 @@ public class ListViewAdapter_HC extends BaseAdapter {
         ImageView Bottom = convertView.findViewById(R.id.Bottom_Image);
         ImageView Coat = convertView.findViewById(R.id.Coat_Image);
 
-        byte[] decodedString_Top = Base64.decode(Data.get(postion).getTop(), Base64.DEFAULT);
+        byte[] decodedString_Top = Base64.decode(Data.get(position).getTop(), Base64.DEFAULT);
         Bitmap decodeByte_Top = BitmapFactory.decodeByteArray(decodedString_Top, 0, decodedString_Top.length);
         Top.setImageBitmap(decodeByte_Top);
 
-        byte[] decodedString_Bottom = Base64.decode(Data.get(postion).getBottom(), Base64.DEFAULT);
+        byte[] decodedString_Bottom = Base64.decode(Data.get(position).getBottom(), Base64.DEFAULT);
         Bitmap decodeByte_Bottom = BitmapFactory.decodeByteArray(decodedString_Bottom, 0, decodedString_Bottom.length);
         Bottom.setImageBitmap(decodeByte_Bottom);
 
-        byte[] decodedString_Coat = Base64.decode(Data.get(postion).getCoat(), Base64.DEFAULT);
+        byte[] decodedString_Coat = Base64.decode(Data.get(position).getCoat(), Base64.DEFAULT);
         Bitmap decodeByte_Coat = BitmapFactory.decodeByteArray(decodedString_Coat, 0, decodedString_Coat.length);
         Coat.setImageBitmap(decodeByte_Coat);
 
