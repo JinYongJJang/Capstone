@@ -64,13 +64,15 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ClosetActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ClosetActivity extends AppCompatActivity{
     HttpTransport httpTransport;
     JsonFactory jsonFactory;
     Vision vision;
@@ -84,14 +86,17 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
     private static ArrayList<item> itemArrayList;
     File file;
     File fileNew;
-    String sort;
+    String sort = null;
+    String uriTarget;
     String Sortt = null;
+    String uri_FileName;
 
     Uri uri;
     private  static boolean signal = false;
     private static final String TAG = "JIN_ERR";
     private static final int DENIED_PERMISSION_CAMERA = 1200;
     private static final int PERMISSIONS_CAMERA = 1201;
+    private static final int CAMERA_RETURN_SORT = 1202;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyBFh7NKwYFlYXEuXXwjgqziGf2Q0suxlkU";
     static String[] Top = {"sleeve", "t shirt","long sleeved t shirt","sweater","sleeveless shirt","suit"};
     static String[] Bottom = {"jeans", "denim","shorts"};
@@ -138,24 +143,28 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
         /*************************************************************************************/
 
 
-
-        httpTransport = AndroidHttp.newCompatibleTransport();
-        jsonFactory = GsonFactory.getDefaultInstance();
-
-        VisionRequestInitializer requestInitializer = new VisionRequestInitializer(CLOUD_VISION_API_KEY);
-
-        Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
-        builder.setVisionRequestInitializer(requestInitializer);
-
-        vision = builder.build();
-
-
+//
+//        httpTransport = AndroidHttp.newCompatibleTransport();
+//        jsonFactory = GsonFactory.getDefaultInstance();
+//
+//        VisionRequestInitializer requestInitializer = new VisionRequestInitializer(CLOUD_VISION_API_KEY);
+//
+//        Vision.Builder builder = new Vision.Builder(httpTransport, jsonFactory, null);
+//        builder.setVisionRequestInitializer(requestInitializer);
+//
+//        vision = builder.build();
 
 
-        feature = new Feature();
-        feature.setMaxResults(10);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, visionAPI);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+//
+//        feature = new Feature();
+//        feature.setMaxResults(10);
+//
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, visionAPI);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+
         picture = findViewById(R.id.take_picture);
         picture.setOnClickListener(new View.OnClickListener() {   // 사진 찍기 버튼
             @Override
@@ -269,45 +278,106 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
 //        startActivity(intent);
 
         Intent intent = new Intent(this, CameraActivity.class);
-        startActivityForResult(intent,3000);
+        intent.putExtra("User_Name", User_Name);
+        intent.putExtra("User_Email", User_Email);
+//        startActivityForResult(intent,3000);
+        startActivityForResult(intent, CAMERA_RETURN_SORT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)  {
 
         if(resultCode == RESULT_OK){
-            //visionAPIData.setText(data.getStringExtra("result"));
-            String a = data.getStringExtra("result");
-            uri = Uri.parse(a);
-
-            String[] proj = {MediaStore.Images.Media.DATA};
-            CursorLoader cursorLoder = new CursorLoader(this, uri,proj,null,null,null);
-            Cursor cursor = cursorLoder.loadInBackground();
-
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-
-            String Real_path = cursor.getString(column_index);  //    /storage/emulated/0/Pictures/1538545064763.jpg
-            dir = Real_path.substring(0,29);
-            FileName = Real_path.substring(29,Real_path.length());
-            file = new File(dir,FileName);
-
-            try{
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);  // uri 를 bitmap으로 변환
-
-
-                //imageView.setImageURI(uri);
-                feature.setType(api);
-
-                callCloudVision(bitmap,feature);
-            }
-//            catch(JSONException e){
+//            //visionAPIData.setText(data.getStringExtra("result"));
+//            String a = data.getStringExtra("result");
+//            uri = Uri.parse(a);
+//
+//            String[] proj = {MediaStore.Images.Media.DATA};
+//            CursorLoader cursorLoder = new CursorLoader(this, uri,proj,null,null,null);
+//            Cursor cursor = cursorLoder.loadInBackground();
+//
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//
+//            String Real_path = cursor.getString(column_index);  //    /storage/emulated/0/Pictures/1538545064763.jpg
+//            dir = Real_path.substring(0,29);
+//            FileName = Real_path.substring(29,Real_path.length());
+//            file = new File(dir,FileName);
+//
+//            try{
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);  // uri 를 bitmap으로 변환
+//
+//
+//                //imageView.setImageURI(uri);
+//                feature.setType(api);
+//
+//                callCloudVision(bitmap,feature);
+//            }
+////            catch(JSONException e){
+////                e.printStackTrace();
+////            }
+//            catch (Exception e){
+//                //Log.e("JIN_ERR",e.toString());
 //                e.printStackTrace();
 //            }
-            catch (Exception e){
-                //Log.e("JIN_ERR",e.toString());
-                e.printStackTrace();
+
+            switch (requestCode){
+                case CAMERA_RETURN_SORT:
+                    sort = data.getStringExtra("sort");
+                    uriTarget = data.getStringExtra("uriTarget");
+
+                    Log.v("JIN_uriTarget", uriTarget);
+                    Log.v("JIN_sort", sort);
+
+                    uri = Uri.parse(uriTarget);
+                    Log.v("JIN_URI", uri.toString());
+
+                    try{
+
+                        String[] proj = {MediaStore.Images.Media.DATA};
+                        CursorLoader cursorLoder = new CursorLoader(ClosetActivity.this, uri,proj,null,null,null);
+                        Cursor cursor = cursorLoder.loadInBackground();
+
+                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+
+                        String Real_path = cursor.getString(column_index);  //    /storage/emulated/0/Pictures/1538545064763.jpg
+
+                        Log.v("JIN_Real_path", Real_path);
+                        dir = Real_path.substring(0,29);
+                        FileName = Real_path.substring(29,Real_path.length());
+                        file = new File(dir,FileName);
+
+                        Log.v("JIN_file", file.toString());
+
+                        String chang_name = file.getName();
+                        String RemoveJPG = chang_name.substring(0,chang_name.length()-4);  // ***********.jpg 중    .jpg 삭제
+                        fileNew = new File(file.getParent(), RemoveJPG + User_Email + "_" + sort + ".jpg");
+
+                        uri_FileName = fileNew.getName();
+
+                        Log.v("JIN_NEWFILE", fileNew.toString());
+
+                        try {
+                            fileNew.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if( file.exists() ) {
+                            if ( !file.renameTo(new File("/storage/emulated/0/Pictures/" + RemoveJPG + User_Email + "_" + sort + ".jpg"))) {
+                                Log.v("JIN_ERRRRRRRRRRRR","이름 변경 에러 : " + file);
+                            }
+                        }
+
+                        Sort_Clothes(sort);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
             }
+
         }
     }
 
@@ -322,232 +392,227 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
 //        }
 //    }
 
-    @SuppressLint("StaticFieldLeak")
-    private void callCloudVision(final Bitmap bitmap, final Feature feature) {
-        //imageUploadProgress.setVisibility(View.VISIBLE);
-        final List<Feature> featureList = new ArrayList<>();
-
-        featureList.add(feature);
-
-        final List<AnnotateImageRequest> annotateImageRequests = new ArrayList<>();
-
-        AnnotateImageRequest annotateImageReq = new AnnotateImageRequest();
-        annotateImageReq.setFeatures(featureList);
-        annotateImageReq.setImage(getImageEncodeImage(bitmap));
-        annotateImageRequests.add(annotateImageReq);
-
-
-        new AsyncTask<Object, Void, String>() {
-
-            @Override
-            protected String doInBackground(Object... params) {
-                try {
-                    Log.v("JIN", "api 실행중");
-
-
-                    BatchAnnotateImagesRequest batchAnnotateImagesRequest = new BatchAnnotateImagesRequest();
-                    batchAnnotateImagesRequest.setRequests(annotateImageRequests);
-
-                    Vision.Images.Annotate annotateRequest = vision.images().annotate(batchAnnotateImagesRequest);
-                    annotateRequest.setDisableGZipContent(true);
-                    BatchAnnotateImagesResponse response = annotateRequest.execute();
-
-                    return convertResponseToString(response);
-                } catch (GoogleJsonResponseException e) {
-
-                    Log.v(TAG, "failed to make API request because " + e.getContent());
-                } catch (IOException e) {
-                    Log.v(TAG, "failed to make API request because of other IOException " + e.getMessage());
-                }
-                return "Cloud Vision API request failed. Check logs for details.";
-            }
-
-            protected void onPostExecute(String result) {
-                //visionAPIData.setText(result);
-                //imageUploadProgress.setVisibility(View.INVISIBLE);
-                Log.v("JIN",result);
-
-
-
-            }
-        }.execute();
-
-    }
-
-    @NonNull
-    private Image getImageEncodeImage(Bitmap bitmap) {
-        Image base64EncodedImage = new Image();
-        // Convierte el bitmap a JPEG
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
-        // Base64 encode the JPEG
-        base64EncodedImage.encodeContent(imageBytes);
-        return base64EncodedImage;
-    }
-
-    private String convertResponseToString(BatchAnnotateImagesResponse response) {
-
-        AnnotateImageResponse imageResponses = response.getResponses().get(0);
-
-        List<EntityAnnotation> entityAnnotations;
-
-        String message = "";
-        switch (api) {
-//            case "LANDMARK_DETECTION":
-//                entityAnnotations = imageResponses.getLandmarkAnnotations();
+//    @SuppressLint("StaticFieldLeak")
+//    private void callCloudVision(final Bitmap bitmap, final Feature feature) {
+//        //imageUploadProgress.setVisibility(View.VISIBLE);
+//        final List<Feature> featureList = new ArrayList<>();
+//
+//        featureList.add(feature);
+//
+//        final List<AnnotateImageRequest> annotateImageRequests = new ArrayList<>();
+//
+//        AnnotateImageRequest annotateImageReq = new AnnotateImageRequest();
+//        annotateImageReq.setFeatures(featureList);
+//        annotateImageReq.setImage(getImageEncodeImage(bitmap));
+//        annotateImageRequests.add(annotateImageReq);
+//
+//
+//        new AsyncTask<Object, Void, String>() {
+//
+//            @Override
+//            protected String doInBackground(Object... params) {
+//                try {
+//                    Log.v("JIN", "api 실행중");
+//
+//
+//                    BatchAnnotateImagesRequest batchAnnotateImagesRequest = new BatchAnnotateImagesRequest();
+//                    batchAnnotateImagesRequest.setRequests(annotateImageRequests);
+//
+//                    Vision.Images.Annotate annotateRequest = vision.images().annotate(batchAnnotateImagesRequest);
+//                    annotateRequest.setDisableGZipContent(true);
+//                    BatchAnnotateImagesResponse response = annotateRequest.execute();
+//
+//                    return convertResponseToString(response);
+//                } catch (GoogleJsonResponseException e) {
+//
+//                    Log.v(TAG, "failed to make API request because " + e.getContent());
+//                } catch (IOException e) {
+//                    Log.v(TAG, "failed to make API request because of other IOException " + e.getMessage());
+//                }
+//                return "Cloud Vision API request failed. Check logs for details.";
+//            }
+//
+//            protected void onPostExecute(String result) {
+//                //visionAPIData.setText(result);
+//                //imageUploadProgress.setVisibility(View.INVISIBLE);
+//                Log.v("JIN",result);
+//
+//
+//
+//            }
+//        }.execute();
+//
+//    }
+//
+//    @NonNull
+//    private Image getImageEncodeImage(Bitmap bitmap) {
+//        Image base64EncodedImage = new Image();
+//        // Convierte el bitmap a JPEG
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+//        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+//
+//        // Base64 encode the JPEG
+//        base64EncodedImage.encodeContent(imageBytes);
+//        return base64EncodedImage;
+//    }
+//
+//    private String convertResponseToString(BatchAnnotateImagesResponse response) {
+//
+//        AnnotateImageResponse imageResponses = response.getResponses().get(0);
+//
+//        List<EntityAnnotation> entityAnnotations;
+//
+//        String message = "";
+//        switch (api) {
+////            case "LANDMARK_DETECTION":
+////                entityAnnotations = imageResponses.getLandmarkAnnotations();
+////                message = formatAnnotation(entityAnnotations);
+////                break;
+////            case "LOGO_DETECTION":
+////                entityAnnotations = imageResponses.getLogoAnnotations();
+////                message = formatAnnotation(entityAnnotations);
+////                break;
+////            case "SAFE_SEARCH_DETECTION":
+////                SafeSearchAnnotation annotation = imageResponses.getSafeSearchAnnotation();
+////                message = getImageAnnotation(annotation);
+////                break;
+////            case "IMAGE_PROPERTIES":
+////                ImageProperties imageProperties = imageResponses.getImagePropertiesAnnotation();
+////                message = getImageProperty(imageProperties);
+////                break;
+//            case "LABEL_DETECTION":
+//                entityAnnotations = imageResponses.getLabelAnnotations();
+//                //Log.v("JIN_imageResponse",entityAnnotations.toString());
 //                message = formatAnnotation(entityAnnotations);
 //                break;
-//            case "LOGO_DETECTION":
-//                entityAnnotations = imageResponses.getLogoAnnotations();
-//                message = formatAnnotation(entityAnnotations);
-//                break;
-//            case "SAFE_SEARCH_DETECTION":
-//                SafeSearchAnnotation annotation = imageResponses.getSafeSearchAnnotation();
-//                message = getImageAnnotation(annotation);
-//                break;
-//            case "IMAGE_PROPERTIES":
-//                ImageProperties imageProperties = imageResponses.getImagePropertiesAnnotation();
-//                message = getImageProperty(imageProperties);
-//                break;
-            case "LABEL_DETECTION":
-                entityAnnotations = imageResponses.getLabelAnnotations();
-                //Log.v("JIN_imageResponse",entityAnnotations.toString());
-                message = formatAnnotation(entityAnnotations);
-                break;
-        }
-        return message;
-    }
-
-    private String getImageAnnotation(SafeSearchAnnotation annotation) {
-        return String.format("adult: %s\nmedical: %s\nspoofed: %s\nviolence: %s\n",
-                annotation.getAdult(),
-                annotation.getMedical(),
-                annotation.getSpoof(),
-                annotation.getViolence());
-    }
-
-    private String getImageProperty(ImageProperties imageProperties) {
-        String message = "";
-        DominantColorsAnnotation colors = imageProperties.getDominantColors();
-        for (ColorInfo color : colors.getColors()) {
-            message = message + "" + color.getPixelFraction() + " - " + color.getColor().getRed() + " - " + color.getColor().getGreen() + " - " + color.getColor().getBlue();
-            message = message + "\n";
-        }
-        return message;
-    }
-
-    private final String formatAnnotation(List<EntityAnnotation> entityAnnotation) {
-        String message = "\n";
-        String rename = "null.jpg";
-
-        if (entityAnnotation != null) {
-            for (EntityAnnotation entity : entityAnnotation) {  // 점수가 높은 것 부터 뽑아옴
-
-                message = message + "  " + entity.getDescription() + " " + entity.getScore();
-                float per = 0;
-                boolean check = false;
-                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.70){
-                    if(check == false){
-                        for(int i=0; i<Top.length; i++){
-                            if(Top[i].equals(entity.getDescription())){
-//                            if(entity.getScore() > per){
-//                                rename = "_top.jpg";
-//                                per = entity.getScore();
+//        }
+//        return message;
+//    }
+//
+//    private String getImageAnnotation(SafeSearchAnnotation annotation) {
+//        return String.format("adult: %s\nmedical: %s\nspoofed: %s\nviolence: %s\n",
+//                annotation.getAdult(),
+//                annotation.getMedical(),
+//                annotation.getSpoof(),
+//                annotation.getViolence());
+//    }
+//
+//    private String getImageProperty(ImageProperties imageProperties) {
+//        String message = "";
+//        DominantColorsAnnotation colors = imageProperties.getDominantColors();
+//        for (ColorInfo color : colors.getColors()) {
+//            message = message + "" + color.getPixelFraction() + " - " + color.getColor().getRed() + " - " + color.getColor().getGreen() + " - " + color.getColor().getBlue();
+//            message = message + "\n";
+//        }
+//        return message;
+//    }
+//
+//    private final String formatAnnotation(List<EntityAnnotation> entityAnnotation) {
+//        String message = "\n";
+//        String rename = "null.jpg";
+//
+//        if (entityAnnotation != null) {
+//            for (EntityAnnotation entity : entityAnnotation) {  // 점수가 높은 것 부터 뽑아옴
+//
+//                message = message + "  " + entity.getDescription() + " " + entity.getScore();
+//                float per = 0;
+//                boolean check = false;
+//                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.70){
+//                    if(check == false){
+//                        for(int i=0; i<Top.length; i++){
+//                            if(Top[i].equals(entity.getDescription())){
+//
+//                                check = true;
+//                                sort = "Top"; // php를 이용하여 상의란 것을 전달
+//                                rename = User_Email+"_top.jpg";
+//                                Log.v("JIN", "kbkjbk "+Top[i]);
 //                            }
-                                check = true;
-                                sort = "Top"; // php를 이용하여 상의란 것을 전달
-                                rename = User_Email+"_top.jpg";
-                                Log.v("JIN", "kbkjbk "+Top[i]);
-                            }
-                        }
-                    }
-                    if(check == false){
-                        for(int i=0; i<Bottom.length; i++){
-                            if(Bottom[i].equals(entity.getDescription())){
-//                            if(entity.getScore() > per){
-//                                rename = "_Bottom.jpg";
-//                                per = entity.getScore();
+//                        }
+//                    }
+//                    if(check == false){
+//                        for(int i=0; i<Bottom.length; i++){
+//                            if(Bottom[i].equals(entity.getDescription())){
+////                            if(entity.getScore() > per){
+////                                rename = "_Bottom.jpg";
+////                                per = entity.getScore();
+////                            }
+//                                check = true;
+//                                sort = "Bottom";
+//                                rename = User_Email+"_Bottom.jpg";
+//                                Log.v("JIN", "kbkjbk "+Bottom[i]);
 //                            }
-                                check = true;
-                                sort = "Bottom";
-                                rename = User_Email+"_Bottom.jpg";
-                                Log.v("JIN", "kbkjbk "+Bottom[i]);
-                            }
-                        }
-                    }
-                    if(check == false){
-                        for(int i=0; i<Outer.length; i++) {
-                            if (Outer[i].equals(entity.getDescription())) {
-//                            if(entity.getScore() > per){
-//                                rename = "_Outer.jpg";
-//                                per = entity.getScore();
+//                        }
+//                    }
+//                    if(check == false){
+//                        for(int i=0; i<Outer.length; i++) {
+//                            if (Outer[i].equals(entity.getDescription())) {
+////                            if(entity.getScore() > per){
+////                                rename = "_Outer.jpg";
+////                                per = entity.getScore();
+////                            }
+//                                check = true;
+//                                sort = "Outer";
+//                                rename = User_Email+"_Outer.jpg";
+//                                Log.v("JIN", "kbkjbk " + Outer[i]);
 //                            }
-                                check = true;
-                                sort = "Outer";
-                                rename = User_Email+"_Outer.jpg";
-                                Log.v("JIN", "kbkjbk " + Outer[i]);
-                            }
-                        }
-                    }
-
-                    if(check != false){
-                        break;
-                    }
-                }
-
-                message += "\n";
-//                Arrays.sort(count);
-
-            }
-            String chang_name = file.getName();
-            String result = chang_name.substring(0,chang_name.length()-4);  // ***********.jpg 중    .jpg 삭제
-            fileNew = new File(file.getParent(),result+rename);
-            try {
-                fileNew.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if( file.exists() ) {
-                if (!file.renameTo(new File("/storage/emulated/0/Pictures/"+result+rename))) {
-                    Log.v("JIN_ERRRRRRRRRRRR","이름 변경 에러 : " + file);
-                }
-            }
-
-            if(rename != "null.jpg"){
-                Sort_Clothes(sort);
-            }
-            else{
-                //Toast.makeText(ClosetActivity.this,"다시 찍어라", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            message = "No Encontrado";
-        }
-        Log.v("JIN_fileName", fileNew.getName()+ "    " +  fileNew.getAbsolutePath());
-
-
-        return message;
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        api = (String) adapterView.getItemAtPosition(i);
-        feature.setType(api);
-        if (bitmap != null)
-            callCloudVision(bitmap, feature);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
+//                        }
+//                    }
+//
+//                    if(check != false){
+//                        break;
+//                    }
+//                }
+//
+//                message += "\n";
+////                Arrays.sort(count);
+//
+//            }
+//            String chang_name = file.getName();
+//            String result = chang_name.substring(0,chang_name.length()-4);  // ***********.jpg 중    .jpg 삭제
+//            fileNew = new File(file.getParent(),result+rename);
+//            try {
+//                fileNew.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if( file.exists() ) {
+//                if (!file.renameTo(new File("/storage/emulated/0/Pictures/"+result+rename))) {
+//                    Log.v("JIN_ERRRRRRRRRRRR","이름 변경 에러 : " + file);
+//                }
+//            }
+//
+////            if(rename != "null.jpg"){
+////                Sort_Clothes(sort);
+////            }
+//            else{
+//                //Toast.makeText(ClosetActivity.this,"다시 찍어라", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            message = "No Encontrado";
+//        }
+//        Log.v("JIN_fileName", fileNew.getName()+ "    " +  fileNew.getAbsolutePath());
+//
+//
+//        return message;
+//
+//    }
+//
+//    @Override
+//    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+////        api = (String) adapterView.getItemAtPosition(i);
+////        feature.setType(api);
+////        if (bitmap != null)
+////            callCloudVision(bitmap, feature);
+////    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//    }
 
     public final void Sort_Clothes(String sort){
-
-        /*********여기 해야해!@~!~!~!!@!********/
 
         Bitmap bit = BitmapFactory.decodeFile(fileNew.getAbsolutePath());
 
@@ -560,7 +625,7 @@ public class ClosetActivity extends AppCompatActivity implements AdapterView.OnI
         try{
             JSONObject json = new JSONObject();
             json.put("Image", encodingImage);
-            json.put("Name", fileNew.getName());
+            json.put("Name", uri_FileName);
             json.put("Email", User_Email);
             json.put("sort", sort);
             Log.v("JIN", json.toString());
