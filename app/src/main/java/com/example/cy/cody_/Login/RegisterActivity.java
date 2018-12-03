@@ -39,6 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        final SessionManager sessionManager = new SessionManager(this);
+
         EmailText = (EditText) findViewById(R.id.EmailText);
         nameText = (EditText) findViewById(R.id.nameText);
         passwordText = (EditText) findViewById(R.id.passwordText);
@@ -53,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Email = EmailText.getText().toString();
                 Name = nameText.getText().toString();
                 Password = passwordText.getText().toString();
+
+                sessionManager.createSession(Email, Name, Password);
 
                 JSONObject json = new JSONObject();
                 try{

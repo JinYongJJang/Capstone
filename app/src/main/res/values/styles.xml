@@ -19,4 +19,15 @@
     <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/cursorColor</item>
     </style>
+
+    <style name="AppTheme.ACTIONBAR" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/status_color</item>
+        <item name="android:showAsAction"> always</item>
+
+    </style>
 </resources>

@@ -1,17 +1,14 @@
 package com.example.cy.cody_.Closet;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -28,8 +25,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,40 +32,23 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.cy.cody_.How_Cloth.SubActivity;
 import com.example.cy.cody_.JsonRequest;
+import com.example.cy.cody_.Login.SessionManager;
+import com.example.cy.cody_.Login.UserinfoActivity;
 import com.example.cy.cody_.R;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.vision.v1.Vision;
-import com.google.api.services.vision.v1.VisionRequestInitializer;
-import com.google.api.services.vision.v1.model.AnnotateImageRequest;
-import com.google.api.services.vision.v1.model.AnnotateImageResponse;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesRequest;
-import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
-import com.google.api.services.vision.v1.model.ColorInfo;
-import com.google.api.services.vision.v1.model.DominantColorsAnnotation;
-import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
-import com.google.api.services.vision.v1.model.Image;
-import com.google.api.services.vision.v1.model.ImageProperties;
-import com.google.api.services.vision.v1.model.SafeSearchAnnotation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 public class ClosetActivity extends AppCompatActivity{
     HttpTransport httpTransport;
@@ -104,6 +82,9 @@ public class ClosetActivity extends AppCompatActivity{
     String dir;
     String FileName;
     ImageView visionAPIData;
+    SessionManager sessionManager;
+
+
     private Feature feature;
     private Bitmap bitmap;
     private String[] visionAPI = new String[]{"LABEL_DETECTION"};
@@ -135,15 +116,19 @@ public class ClosetActivity extends AppCompatActivity{
         setContentView(R.layout.activity_closet);
 
 
-
-        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
-        Intent GetIntent = getIntent();
-        User_Email = GetIntent.getExtras().getString("Email");
-        User_Name = GetIntent.getExtras().getString("Name");
-        /*************************************************************************************/
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
 
 
-//
+        /********************* 변경) 로그인 되어있을때 *************************/
+
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        User_Email = user.get(sessionManager.EMAIL);
+        User_Name = user.get(sessionManager.NAME);
+
+        /*********************************************************************/
+
+
+
 //        httpTransport = AndroidHttp.newCompatibleTransport();
 //        jsonFactory = GsonFactory.getDefaultInstance();
 //
@@ -278,8 +263,8 @@ public class ClosetActivity extends AppCompatActivity{
 //        startActivity(intent);
 
         Intent intent = new Intent(this, CameraActivity.class);
-        intent.putExtra("User_Name", User_Name);
-        intent.putExtra("User_Email", User_Email);
+//        intent.putExtra("User_Name", User_Name);
+//        intent.putExtra("User_Email", User_Email);
 //        startActivityForResult(intent,3000);
         startActivityForResult(intent, CAMERA_RETURN_SORT);
     }

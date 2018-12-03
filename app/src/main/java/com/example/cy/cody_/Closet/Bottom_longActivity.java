@@ -3,7 +3,6 @@ package com.example.cy.cody_.Closet;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.example.cy.cody_.Login.UserinfoActivity;
 import com.example.cy.cody_.R;
 
 import org.json.JSONArray;

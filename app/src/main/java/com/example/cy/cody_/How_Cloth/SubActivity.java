@@ -22,11 +22,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.cy.cody_.JsonRequest;
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class SubActivity extends AppCompatActivity {
 
@@ -37,6 +40,7 @@ public class SubActivity extends AppCompatActivity {
     String Cody_ID = null;
     byte[] decodedString_IMG;
     Bitmap decodeByte_IMG;
+    SessionManager sessionManager;
 
     ImageView UserImageVIew;
     EditText Title_Edit;
@@ -53,32 +57,32 @@ public class SubActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
 
-        /*************** How_clothActivity 에서 넘어온 값 저장 *******************/
-        Intent GetIntent = getIntent();
-        Email = GetIntent.getExtras().getString("Email");
-        Name = GetIntent.getExtras().getString("Name");
-        /***********************************************************************/
-
 
         TextView Name_TextView = findViewById(R.id.textview);
-        Name_TextView.setText(Name);  // 로그인 되어 있는 상태로 실행되기 때문에 유저 이름으로 변경가능
-
-
         Title_Edit = findViewById(R.id.Title_Edit);
         Content_Edit = findViewById(R.id.Content_Edit);
         UserImageVIew = findViewById(R.id.userimageview);
-
-
         SaveButton=(Button)findViewById(R.id.usersaveboa);
+        Get_Picture = (Button)findViewById(R.id.usergetpic);
+
+
+
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
+        /********************* 변경) 로그인 되어있을때 *********************/
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        Email = user.get(sessionManager.EMAIL);
+        Name = user.get(sessionManager.NAME);
+        /*********************************************************************/
+
+
+        Name_TextView.setText(Name);  // 로그인 되어 있는 상태로 실행되기 때문에 유저 이름으로 변경가능
+
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Save_shows();
             }
         });
-
-
-        Get_Picture = (Button)findViewById(R.id.usergetpic);
         Get_Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

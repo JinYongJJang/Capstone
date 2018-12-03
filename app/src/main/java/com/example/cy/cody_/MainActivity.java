@@ -35,6 +35,8 @@ import com.example.cy.cody_.Expert.ExpertActivity;
 import com.example.cy.cody_.How_Cloth.How_clothActivity;
 import com.example.cy.cody_.How_Cloth.SubActivity;
 import com.example.cy.cody_.Login.LoginActivity;
+import com.example.cy.cody_.Login.SessionManager;
+import com.example.cy.cody_.Login.UserinfoActivity;
 import com.example.cy.cody_.Weather.GpsInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -63,6 +65,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     TextView country;
     String User_Email = null;
     String User_Name = null;
+    SessionManager sessionManager;
 
     private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
     private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
@@ -110,6 +114,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btnShowLocation = (ImageButton) findViewById(R.id.btn_start); // 날씨 부분
+        ImageButton buttonCloset = (ImageButton) findViewById(R.id.Closet);
+        Main_Login_Button = (TextView) findViewById(R.id.Main_Login_button);
+        ImageButton buttonFastCody = (ImageButton) findViewById(R.id.Fast_Cody);
+        ImageButton buttonHowCloth = (ImageButton) findViewById(R.id.How_Cloth);
+        ImageButton buttonExpert = (ImageButton) findViewById(R.id.Expert);
+        Calendar_Result = (TextView) findViewById(R.id.Calendar_Result);
+        temp = (TextView) findViewById(R.id.temp); // 온도
+        city = (TextView) findViewById(R.id.city); // 도시 이름
+        weather =(TextView) findViewById(R.id.weather); // 날씨
+        country = (TextView) findViewById(R.id.country); // 나라 이니셜
+        weather_Icons = (ImageView)findViewById(R.id.weather_icon); // 아이콘
+
+
+
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        User_Email = user.get(sessionManager.EMAIL);
+        if(sessionManager.isLoggin() == true){  //로그인이 되어있을떄
+            Main_Login_Button.setText(User_Email);
+        }
+        else{
+            Main_Login_Button.setText("로그인");
+        }
+
+
         // Google Calendar API 사용하기 위해 필요한 인증 초기화( 자격 증명 credentials, 서비스 객체 )
         // OAuth 2.0를 사용하여 구글 계정 선택 및 인증하기 위한 준비
         // /** (나도 몰랑) */
@@ -122,12 +152,7 @@ public class MainActivity extends AppCompatActivity {
         getResultsFromApi();
 
 
-        btnShowLocation = (ImageButton) findViewById(R.id.btn_start); // 날씨 부분
-        temp = (TextView) findViewById(R.id.temp); // 온도
-        city = (TextView) findViewById(R.id.city); // 도시 이름
-        weather =(TextView) findViewById(R.id.weather); // 날씨
-        country = (TextView) findViewById(R.id.country); // 나라 이니셜
-        weather_Icons = (ImageView)findViewById(R.id.weather_icon); // 아이콘
+
         temp.setText("0℃");
         weather.setText("Weather Info");
         country.setText("Country");
@@ -161,11 +186,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
 
-        ImageButton buttonCloset = (ImageButton) findViewById(R.id.Closet);
+
         buttonCloset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (User_Email == null) {   // 로그인이 안되어 있을 때
+                if (sessionManager.isLoggin() == false) {   // 로그인이 안되어 있을 때
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle(" 오늘 뭐 입지?");
@@ -186,13 +211,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else { // 로그인이 되어 있을 경우
                     Intent closetintent = new Intent(MainActivity.this,ClosetActivity.class);
-                    closetintent.putExtra("Email", User_Email);
-                    closetintent.putExtra("Name", User_Name);
                     startActivity(closetintent);
                 }
             }
         });
-        ImageButton buttonFastCody = (ImageButton) findViewById(R.id.Fast_Cody);
+
         buttonFastCody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,24 +223,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(codyintent);
             }
         });
-        ImageButton buttonHowCloth = (ImageButton) findViewById(R.id.How_Cloth);
+
         buttonHowCloth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent HowClothintent = new Intent(MainActivity.this,How_clothActivity.class);
-                HowClothintent.putExtra("Email", User_Email);
-                HowClothintent.putExtra("Name", User_Name);
                 startActivity(HowClothintent);
             }
         });
-        ImageButton buttonExpert = (ImageButton) findViewById(R.id.Expert);
+
         buttonExpert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(User_Email != null ) {
+                if(sessionManager.isLoggin() == true) {
                     Intent Expertintent = new Intent(MainActivity.this, ExpertActivity.class);
-                    Expertintent.putExtra("Email", User_Email);
-                    Expertintent.putExtra("Name", User_Name);
                     startActivity(Expertintent);
                 }
                 else {
@@ -241,15 +260,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        Main_Login_Button = (TextView) findViewById(R.id.Main_Login_button);
+
         Main_Login_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent LoginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivityForResult(LoginIntent,REQUEST_LOGIN);
+
+                if(sessionManager.isLoggin() == false){       /**  로그인 안되어 있을 경우  **/
+                    Intent LoginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(LoginIntent,REQUEST_LOGIN);
+                }
+                else{
+                    /**  수정 화면으로  **/
+                    Intent Modify_User = new Intent(MainActivity.this, UserinfoActivity.class);
+                    startActivity(Modify_User);
+                }
+
             }
         });
-        Calendar_Result = (TextView) findViewById(R.id.Calendar_Result);
+
+
         Calendar_Result.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -359,7 +388,13 @@ public class MainActivity extends AppCompatActivity {
                 case REQUEST_LOGIN:   // 로그인 버튼을 눌렀을 시
                     User_Email = data.getStringExtra("Email");
                     User_Name = data.getStringExtra("Name");
-                    Main_Login_Button.setText(User_Email);
+                    if(sessionManager.isLoggin() == true){  //로그인이 되어있을떄
+                        Main_Login_Button.setText(User_Email);
+                    }
+                    else{
+                        Main_Login_Button.setText("로그인");
+                    }
+
                     break;
             }
 
@@ -728,6 +763,19 @@ public class MainActivity extends AppCompatActivity {
         }
         public String getIcon_name() {
             return icon_name;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        String User_Email = user.get(sessionManager.EMAIL);
+        if(sessionManager.isLoggin() == true){  //로그인이 되어있을떄
+            Main_Login_Button.setText(User_Email);
+        }
+        else{
+            Main_Login_Button.setText("로그인");
         }
     }
 

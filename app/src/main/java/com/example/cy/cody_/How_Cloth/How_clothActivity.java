@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cy.cody_.Login.LoginActivity;
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -42,6 +44,8 @@ public class How_clothActivity extends AppCompatActivity {
     String Email = null;
     String Name;
     static List<Item> items = new ArrayList<>();
+
+    SessionManager sessionManager;
 
 
     static RecyclerView recyclerView;
@@ -61,12 +65,21 @@ public class How_clothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_how_cloth);
 
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        Num_1 = findViewById(R.id.Num_1);
+        Num_2 = findViewById(R.id.Num_2);
+        Num_3 = findViewById(R.id.Num_3);
+        Num_4 = findViewById(R.id.Num_4);
+        Num_5 = findViewById(R.id.Num_5);
+
+
         recyclerView.setHasFixedSize(true);
 
         CallAsyncTask();  // 초기에 한번 그림 보여주기 위해 바로 실행
 
-        Num_1 = findViewById(R.id.Num_1);
+
         Num_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +89,7 @@ public class How_clothActivity extends AppCompatActivity {
             }
         });
 
-        Num_2 = findViewById(R.id.Num_2);
+
         Num_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +99,6 @@ public class How_clothActivity extends AppCompatActivity {
             }
         });
 
-        Num_3 = findViewById(R.id.Num_3);
         Num_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +108,6 @@ public class How_clothActivity extends AppCompatActivity {
             }
         });
 
-        Num_4 = findViewById(R.id.Num_4);
         Num_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +116,7 @@ public class How_clothActivity extends AppCompatActivity {
                 CallAsyncTask();
             }
         });
-        Num_5 = findViewById(R.id.Num_5);
+
         Num_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,11 +127,12 @@ public class How_clothActivity extends AppCompatActivity {
         });
 
 
-        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
-        Intent GetIntent = getIntent();
-        Email = GetIntent.getExtras().getString("Email");
-        Name = GetIntent.getExtras().getString("Name");
-        /*************************************************************************************/
+        /********************* 변경) 로그인 되어있을때 *********************/
+
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        Email = user.get(sessionManager.EMAIL);
+
+        /*********************************************************************/
 
 //        Log.v("JIN", Email);
 //        Intent intent=new Intent(this,SubActivity.class);
@@ -135,8 +147,6 @@ public class How_clothActivity extends AppCompatActivity {
 
         if (Email != null) {  // 로그인이 되어 있을경우
             Intent intent = new Intent(this,SubActivity.class);
-            intent.putExtra("Email", Email);
-            intent.putExtra("Name", Name);
             startActivity(intent);
         }
         else {  // 로그인이 안된 상태일 경우 로그인을 시키고 작성가능하게 한다.
@@ -168,7 +178,6 @@ public class How_clothActivity extends AppCompatActivity {
             switch (requestCode){
                 case REQUEST_LOGIN:
                     Email = data.getStringExtra("Email");  // 경고창으로 로그인페이지에 이동 후 받은 결과값을 저장
-                    Name = data.getStringExtra("Name");
                     break;
             }
         }

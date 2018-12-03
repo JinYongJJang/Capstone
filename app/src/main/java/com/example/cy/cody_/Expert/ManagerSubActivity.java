@@ -27,6 +27,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.cy.cody_.JsonRequest;
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 import com.google.gson.JsonObject;
 
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ManagerSubActivity extends AppCompatActivity {
     private final int GALLERY_CODE=1112;
@@ -46,6 +48,8 @@ public class ManagerSubActivity extends AppCompatActivity {
     String Content;
     String Picture;
     Bitmap bit = null;
+    SessionManager sessionManager;
+
     EditText Title_Edit;
     Button Get_Picture;
     EditText Content_Edit;
@@ -57,11 +61,12 @@ public class ManagerSubActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_sub);
 
-        /*************** How_clothActivity 에서 넘어온 값 저장 *******************/
-        Intent GetIntent = getIntent();
-        Email = GetIntent.getExtras().getString("Email");
-        Name = GetIntent.getExtras().getString("Name");
-        /***********************************************************************/
+        /***************************************************************************/
+        sessionManager = new SessionManager(this);
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        Email = user.get(sessionManager.EMAIL);
+        Name = user.get(sessionManager.NAME);
+        /***************************************************************************/
 
         TextView Name_TextView = findViewById(R.id.textview);
         Name_TextView.setText(Name);

@@ -21,6 +21,7 @@ import com.example.cy.cody_.Expert.ManagerSubActivity;
 import com.example.cy.cody_.Login.LoginActivity;
 import com.example.cy.cody_.Expert.Item;
 import com.example.cy.cody_.Expert.RecyclerAdapter;
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 
 import org.json.JSONArray;
@@ -36,6 +37,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExpertActivity extends AppCompatActivity {
@@ -44,6 +46,7 @@ public class ExpertActivity extends AppCompatActivity {
     static RecyclerView recyclerView;
     static RecyclerView.Adapter Adapter;
     static RecyclerView.LayoutManager layoutManager;
+    SessionManager sessionManager;
 
     int Page_Num = 1;
 
@@ -62,26 +65,37 @@ public class ExpertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expert);
+
         btn = (Button)findViewById(R.id.recyclerviewbutton1_chang);
-
-        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
-        Intent GetIntent = getIntent();
-        Email = GetIntent.getExtras().getString("Email");
-        Name = GetIntent.getExtras().getString("Name");
-        /*****************************************************************************************/
-        Log.e(Name,"Name");
-        if (!Name.equals("vv")){
-            btn.setVisibility(View.INVISIBLE);
-        }else{
-            btn.setVisibility(View.VISIBLE);
-        }
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview2_chang);
+        Num_1 = findViewById(R.id.Num_1_chang);
+        Num_2 = findViewById(R.id.Num_2_chang);
+        Num_3 = findViewById(R.id.Num_3_chang);
+        Num_4 = findViewById(R.id.Num_4_chang);
+        Num_5 = findViewById(R.id.Num_5_chang);
+
+
+        /***************************************************************************/
+        sessionManager = new SessionManager(this);
+        if(sessionManager.isLoggin() == true){
+            HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+            Email = user.get(sessionManager.EMAIL);
+            Name = user.get(sessionManager.NAME);
+            if (!Name.equals("vv")){
+                btn.setVisibility(View.INVISIBLE);
+            }else{
+                btn.setVisibility(View.VISIBLE);
+            }
+        }
+        /***************************************************************************/
+
+
+
+
         recyclerView.setHasFixedSize(true);
 
         CallAsyncTask();  // 초기에 한번 그림 보여주기 위해 바로 실행
 
-        Num_1 = findViewById(R.id.Num_1_chang);
         Num_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +105,6 @@ public class ExpertActivity extends AppCompatActivity {
             }
         });
 
-        Num_2 = findViewById(R.id.Num_2_chang);
         Num_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +114,6 @@ public class ExpertActivity extends AppCompatActivity {
             }
         });
 
-        Num_3 = findViewById(R.id.Num_3_chang);
         Num_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +123,6 @@ public class ExpertActivity extends AppCompatActivity {
             }
         });
 
-        Num_4 = findViewById(R.id.Num_4_chang);
         Num_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +131,7 @@ public class ExpertActivity extends AppCompatActivity {
                 CallAsyncTask();
             }
         });
-        Num_5 = findViewById(R.id.Num_5_chang);
+
         Num_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,12 +140,9 @@ public class ExpertActivity extends AppCompatActivity {
                 CallAsyncTask();
             }
         });
-
     }
     public void onClick2(View view){
         Intent intent = new Intent(this,ManagerSubActivity.class);
-        intent.putExtra("Email", Email);
-        intent.putExtra("Name", Name);
         startActivity(intent);
     }
 

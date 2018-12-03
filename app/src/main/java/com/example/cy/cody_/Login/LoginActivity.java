@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        final SessionManager sessionManager = new SessionManager(this);
+
         emailText = (EditText) findViewById(R.id.emailText);
         passwordText = (EditText) findViewById(R.id.passwordText);
 
@@ -91,12 +93,20 @@ public class LoginActivity extends AppCompatActivity {
                             if(success){
                                 String Email = jsonResponse.getString("Email");
                                 String Name = jsonResponse.getString("Name");
+                                String Password = jsonResponse.getString("Password");
 
+
+                                /******   이 부분이 필요 없지 않을까? ****************/
                                 Intent intent = new Intent();
                                 intent.putExtra("Email", Email);
                                 intent.putExtra("Name", Name);
                                 //intent.putExtra("Password", Password);
                                 setResult(RESULT_OK, intent);
+
+                                /****************************************************/
+
+                                sessionManager.createSession(Name, Email, Password);
+
                                 finish();
                             }
                             else{

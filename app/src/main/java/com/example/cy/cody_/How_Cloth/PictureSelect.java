@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 
 import org.json.JSONArray;
@@ -27,6 +28,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PictureSelect extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class PictureSelect extends AppCompatActivity {
     String Email;
     ListView listview;
     String Click_Position = null;
+    SessionManager sessionManager;
 
     ArrayList<ListViewItem_HC> data ;
     ListViewAdapter_HC Myadapter;
@@ -43,12 +46,16 @@ public class PictureSelect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture_select);
 
-        Intent GetIntent = getIntent();
-        Email = GetIntent.getExtras().getString("Email");
-
         listview = (ListView) findViewById(R.id.ListView_HC);
+        Button Select_button_HC = findViewById(R.id.Select_Button_HC);
 
-        //포문으로 json array length 까지 data.add(~~)
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
+        /********************* 변경) 로그인 되어있을때 *********************/
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        Email = user.get(sessionManager.EMAIL);
+        /*********************************************************************/
+
+
         CallAsyncTask_PictureSelect();   // AsyncTask 실행
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {  // 리스틑뷰 클릭시
@@ -58,7 +65,6 @@ public class PictureSelect extends AppCompatActivity {
             }
         });
 
-        Button Select_button_HC = findViewById(R.id.Select_Button_HC);
         Select_button_HC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

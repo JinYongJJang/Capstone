@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.cy.cody_.Login.SessionManager;
 import com.example.cy.cody_.R;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -55,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -88,6 +90,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
     String User_Email;
     String User_Name;
+    SessionManager sessionManager;
 
     Timer timer;
     TimerTask tt;
@@ -100,12 +103,14 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         setContentView(R.layout.activity_camera);
 
 
+        sessionManager = new SessionManager(this);   /** 세션 시작  **/
 
-        /**********************    메인에서 로그인이 되어있을때 값을 받아옴    *******************/
-        Intent GetIntent = getIntent();
-        User_Email = GetIntent.getExtras().getString("User_Email");
-        User_Name = GetIntent.getExtras().getString("User_Name");
-        /*************************************************************************************/
+
+        /********************* 변경) 로그인 되어있을때 *********************/
+        HashMap<String, String> user = sessionManager.SessiongetUserDetail();
+        User_Email = user.get(sessionManager.EMAIL);
+        User_Name = user.get(sessionManager.NAME);
+        /*********************************************************************/
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

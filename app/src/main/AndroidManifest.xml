@@ -42,10 +42,14 @@
         <activity android:name=".How_Cloth.SubActivity" />
         <activity android:name=".Calendar.CalendarActivity" />
         <activity android:name=".Closet.CameraActivity" />
-        <activity android:name=".Closet.UserinfoActivity" />
+        <activity
+            android:name=".Login.UserinfoActivity"
+            android:label="UserInfo"
+            android:theme="@style/AppTheme.ACTIONBAR" />
         <activity android:name=".How_Cloth.PictureSelect" />
         <activity android:name=".Expert.ExpertActivity" />
-        <activity android:name=".Expert.ManagerSubActivity"></activity>
+        <activity android:name=".Expert.ManagerSubActivity" />
+        <activity android:name=".Expert.ExpertBoardintro"></activity>
     </application>
 
 </manifest>

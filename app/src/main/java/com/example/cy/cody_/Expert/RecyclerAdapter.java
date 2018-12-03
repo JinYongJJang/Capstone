@@ -71,7 +71,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(context,ExpertBoardintro.class);
+                intent.putExtra("ID",item.getID());
+                context.startActivity(intent);
             }
         });
     }
