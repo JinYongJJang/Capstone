@@ -3,69 +3,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10"
+    android:weightSum="15"
     tools:context=".MainActivity">
 
-    <Button
-        android:layout_weight="1"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/recyclerview"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="-45dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/button_corner"
-        android:text="글 작성"
-        android:textColor="#ffffff"
-        android:textSize="18dp"
-        android:onClick="onClick"
-        android:id="@+id/recyclerviewbutton"
-        />
-    <android.support.v7.widget.RecyclerView
-        android:layout_weight="15"
-        android:layout_marginTop="45dp"
-        android:id="@+id/recyclerview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/recyclerviewbutton"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:layout_above="@+id/recyclerview"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="2"
+            android:background="@drawable/button_corner"
+            android:onClick="onClick"
+            android:text="글 작성"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="13">
+        <android.support.v7.widget.RecyclerView
+            android:layout_weight="8"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/Num_1"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="1"/>
         <TextView
             android:id="@+id/Num_2"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="2"/>
         <TextView
             android:id="@+id/Num_3"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="3"/>
         <TextView
             android:id="@+id/Num_4"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="4"/>
         <TextView
             android:id="@+id/Num_5"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="5"/>
 

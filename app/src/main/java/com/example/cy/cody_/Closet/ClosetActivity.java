@@ -68,6 +68,9 @@ public class ClosetActivity extends AppCompatActivity{
     String uriTarget;
     String Sortt = null;
     String uri_FileName;
+    int red = 0;
+    int green = 0;
+    int blue = 0;
 
     Uri uri;
     private  static boolean signal = false;
@@ -310,7 +313,9 @@ public class ClosetActivity extends AppCompatActivity{
                 case CAMERA_RETURN_SORT:
                     sort = data.getStringExtra("sort");
                     uriTarget = data.getStringExtra("uriTarget");
-
+                    red = data.getIntExtra("red",255);
+                    green = data.getIntExtra("green",255);
+                    blue = data.getIntExtra("blue",255);
                     Log.v("JIN_uriTarget", uriTarget);
                     Log.v("JIN_sort", sort);
 
@@ -613,6 +618,9 @@ public class ClosetActivity extends AppCompatActivity{
             json.put("Name", uri_FileName);
             json.put("Email", User_Email);
             json.put("sort", sort);
+            json.put("red", red);
+            json.put("green", green);
+            json.put("blue", blue);
             Log.v("JIN", json.toString());
 
 

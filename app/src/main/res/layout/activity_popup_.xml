@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:weightSum="1"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.45"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="124dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_weight="1"
+            android:src="@drawable/c1"/>
+
+        <TextView
+            android:id="@+id/editText"
+            android:layout_width="229dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_marginRight="18dp"
+            android:gravity="center"
+            android:textColor="#99C98AFF"
+            android:text="옷 색상과 매치되는 색상
+하나를 선택해주세요." />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.45"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="124dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_weight="1"
+            android:src="@drawable/c2"/>
+
+        <TextView
+            android:id="@+id/editText2"
+            android:layout_width="229dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_marginRight="18dp"
+
+            android:textColor="#99C98AFF"
+            android:gravity="center"
+
+            android:text="매치되는 색이 없다면
+ TRY AGAIN 버튼을 선택해주세요." />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background=" #99C98AFF"
+        android:textColor="#FFFFFF"
+        android:text="닫기"
+        android:layout_gravity="center"
+        android:id="@+id/btn"/>
+</LinearLayout>

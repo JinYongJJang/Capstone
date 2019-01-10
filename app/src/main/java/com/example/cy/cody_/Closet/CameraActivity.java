@@ -3,23 +3,18 @@ package com.example.cy.cody_.Closet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -27,10 +22,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.cy.cody_.Login.SessionManager;
@@ -51,7 +42,6 @@ import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -61,32 +51,30 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-
 public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback{
 //public class CameraActivity extends AppCompatActivity{
-
+    static final int REQUEST_ACCOUNT_COLOR = 9000;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     Camera camera;
+    ByteArrayOutputStream stream=null;
     boolean previewing = false;
     LayoutInflater controlInflater = null;
     Camera.Parameters parameters;
     Bitmap bbitmap;
     private Feature feature;
     String sort= "0";
-
+    int red=0,green=0,blue=0;
+    String check_man="y";
     HttpTransport httpTransport;
     JsonFactory jsonFactory;
     Vision vision;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyBFh7NKwYFlYXEuXXwjgqziGf2Q0suxlkU";
     private String[] visionAPI = new String[]{"LABEL_DETECTION"};
     private String api = "LABEL_DETECTION";
-    static String[] Top = {"sleeve", "t shirt","long sleeved t shirt","sweater","sleeveless shirt","suit"};
-    static String[] Bottom = {"jeans", "denim","shorts"};
-    static String[] Outer = {"blazer", "jacket","shorts","cardigan"};
+    static String[] Top = {"sleeve", "t shirt","long sleeved t shirt","sweater","sleeveless shirt","suit", "hoodie", "hood", "wool", "woolen", "knitting"};
+    static String[] Bottom = {"jeans", "denim","shorts", "trousers"};
+    static String[] Outer = {"blazer", "jacket", "cardigan", "outerwear", "vest", "tranch coat", "overcoat", "fur clothing", "suit"};
 
     String User_Email;
     String User_Name;
@@ -101,6 +89,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+
 
 
         sessionManager = new SessionManager(this);   /** 세션 시작  **/
@@ -326,10 +316,10 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        camera.stopPreview();
-        camera.release();
-        camera = null;
-        previewing = false;
+//        camera.stopPreview();
+//        camera.release();
+//        camera = null;
+//        previewing = false;
     }
 
 
@@ -385,37 +375,12 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 Log.v("JIN_result",result);
 
                 if(sort !=  "0"){
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    stream = new ByteArrayOutputStream();
                     bbitmap.compress(Bitmap.CompressFormat. JPEG, 80, stream);
 
-                    Uri uriTarget = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
-
-                    byte[] currentData = stream.toByteArray();
-                    OutputStream imageFileOS;
-                    try{
-                        imageFileOS = getContentResolver().openOutputStream(uriTarget);
-                        imageFileOS.write(currentData);
-                        imageFileOS.flush();
-                        imageFileOS.close();
-
-                        Toast.makeText(CameraActivity.this, "Image saved" + uriTarget.toString(), Toast.LENGTH_SHORT).show();
-                        Log.v("User's Log in Camera",uriTarget.toString());
-
-                    }
-                    catch(FileNotFoundException e){
-                        e.printStackTrace();
-                    }
-                    catch(IOException e){
-                        e.printStackTrace();
-                    }
-
-                    //Toast.makeText(CameraActivity.this, uriTarget.toString(), Toast.LENGTH_LONG).show();
-
-                    Intent Return_Intent = new Intent();
-                    Return_Intent.putExtra("sort", sort);
-                    Return_Intent.putExtra("uriTarget", uriTarget.toString());
-                    setResult(RESULT_OK, Return_Intent);
-                    finish();
+                    Intent color_intent = new Intent(CameraActivity.this, Color_SelectActivity.class);
+                    color_intent.putExtra("colorimage",stream.toByteArray());
+                    startActivityForResult(color_intent,REQUEST_ACCOUNT_COLOR);
                 }
                 else{
                     tt = timerTaskMake();
@@ -465,7 +430,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 message += "\n";
 
                 boolean check = false;
-                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.70){
+                if(Float.parseFloat(String.valueOf(entity.getScore())) > 0.60){
                     if(check == false){
                         for(int i=0; i<Top.length; i++){
                             if(Top[i].equals(entity.getDescription())){
@@ -507,7 +472,60 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         return message;
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                // MainActivity 에서 요청할 때 보낸 요청 코드 (3000)
+                case REQUEST_ACCOUNT_COLOR:
+                    check_man = data.getStringExtra("yes");
+                    red = data.getIntExtra("red",255);
+                    green = data.getIntExtra("green",255);
+                    blue = data.getIntExtra("blue",255);
 
+                    Log.e("CY_color2",Integer.toString(red));
+                    Log.e("CY_color2",Integer.toString(green));
+                    Log.e("CY_color2",Integer.toString(blue));
+                    if(!check_man.equals("yes")){
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                    else{
+                        Uri uriTarget = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+                        byte[] currentData = stream.toByteArray();
+                        OutputStream imageFileOS;
+                        try {
+                            imageFileOS = getContentResolver().openOutputStream(uriTarget);
+                            imageFileOS.write(currentData);
+                            imageFileOS.flush();
+                            imageFileOS.close();
+
+                            Toast.makeText(CameraActivity.this, "Image saved" + uriTarget.toString(), Toast.LENGTH_SHORT).show();
+                            Log.v("User's Log in Camera", uriTarget.toString());
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Toast.makeText(CameraActivity.this, uriTarget.toString(), Toast.LENGTH_LONG).show();
+
+                        Intent Return_Intent = new Intent();
+                        Return_Intent.putExtra("sort", sort);
+                        Return_Intent.putExtra("uriTarget", uriTarget.toString());
+                        Return_Intent.putExtra("red", red);
+                        Return_Intent.putExtra("green", green);
+                        Return_Intent.putExtra("blue", blue);
+                        setResult(RESULT_OK, Return_Intent);
+                        finish();
+                    }
+
+                    break;
+            }
+        }
+    }
     public TimerTask timerTaskMake(){
         TimerTask tempTask = new TimerTask() {
             @Override

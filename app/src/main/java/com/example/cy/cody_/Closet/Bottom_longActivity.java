@@ -133,7 +133,6 @@ public class Bottom_longActivity extends AppCompatActivity{
 
 
 
-
     // 보통 ListView는 통신을 통해 가져온 데이터를 보여줍니다.
     // arrResId, titles, contents를 서버에서 가져온 데이터라고 생각하시면 됩니다.
 

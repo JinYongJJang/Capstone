@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     // GPSTracker class
     private GpsInfo gps;
+    Double T;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         // Google Calendar API 사용하기 위해 필요한 인증 초기화( 자격 증명 credentials, 서비스 객체 )
         // OAuth 2.0를 사용하여 구글 계정 선택 및 인증하기 위한 준비
         // /** (나도 몰랑) */
@@ -160,25 +162,10 @@ public class MainActivity extends AppCompatActivity {
         btnShowLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 // 권한 요청을 해야 함
-                if (!isPermission) {
-                    callPermission();
-                    return;
-                }
-
-                gps = new GpsInfo(MainActivity.this);
-                // GPS 사용유무 가져오기
-                if (gps.isGetLocation()) {
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
-                    Log.v("GPS Check ", String.valueOf(latitude)+" "+String.valueOf(longitude));
-                    JsonLoadingTask Thread_Json = new JsonLoadingTask();
-                    Thread_Json.execute(); // Async스레드를 시작
-                } else {
-                    // GPS 를 사용할수 없으므로
-                    gps.showSettingsAlert();
-                }
+                GPS();
             }
         });
+
         callPermission();  // 권한 요청을 해야 함
 
         View view = getWindow().getDecorView();
@@ -219,8 +206,18 @@ public class MainActivity extends AppCompatActivity {
         buttonFastCody.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent codyintent = new Intent(MainActivity.this,Fast_codyActivity.class);
-                startActivity(codyintent);
+                GPS();
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    int hasWriteExternalStoragePermission = ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if(hasWriteExternalStoragePermission == PackageManager.PERMISSION_GRANTED){
+                        Intent codyintent = new Intent(MainActivity.this,Fast_codyActivity.class);
+                        codyintent.putExtra("Temp", String.format("%.1f",T));
+                        startActivity(codyintent);
+                    }
+                    else{
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
+                    }
+                }
             }
         });
 
@@ -567,6 +564,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
  /**------------------------------- 날씨 정보 파싱 함수 ---------------------------------------**/
+
+
+    public void GPS(){
+        if (!isPermission) {
+            callPermission();
+            return;
+        }
+
+        gps = new GpsInfo(MainActivity.this);
+        // GPS 사용유무 가져오기
+        if (gps.isGetLocation()) {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            Log.v("GPS Check ", String.valueOf(latitude)+" "+String.valueOf(longitude));
+            JsonLoadingTask Thread_Json = new JsonLoadingTask();
+            Thread_Json.execute(); // Async스레드를 시작
+        } else {
+            // GPS 를 사용할수 없으므로
+            gps.showSettingsAlert();
+        }
+    }
+
     private class JsonLoadingTask extends AsyncTask<String, Void, weather_check> {
         @Override
         protected weather_check doInBackground(String... strs) {
@@ -575,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
         } // doInBackground : 백그라운드 작업을 진행한다.
         @Override
         protected void onPostExecute(weather_check result) {
-            Double T = Double.parseDouble(result.getTemp()) - 273;
+            T = Double.parseDouble(result.getTemp()) - 273;
             weather_Icons.setImageDrawable(SetingIcon(result.getIcon_name()));
             weather.setText(result.getWeather())  ;
             temp.setText(String.format("%.1f",T)+"℃");
@@ -777,6 +796,8 @@ public class MainActivity extends AppCompatActivity {
         else{
             Main_Login_Button.setText("로그인");
         }
+        GPS();
+
     }
 
 }
